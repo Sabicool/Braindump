@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Sabiqul&#39;s Braindump</title>
-    <link>https://sabicool.github.io/Braindump/tags/</link>
+    <link>https://sabicool-braindump.netlify.app/tags/</link>
     <description>Recent content in Tags on Sabiqul&#39;s Braindump</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 10 Feb 2023 18:55:00 +0800</lastBuildDate><atom:link href="https://sabicool.github.io/Braindump/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 10 Feb 2023 18:55:00 +0800</lastBuildDate><atom:link href="https://sabicool-braindump.netlify.app/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>seedling</title>
-      <link>https://sabicool.github.io/Braindump/tags/seedling/</link>
+      <link>https://sabicool-braindump.netlify.app/tags/seedling/</link>
       <pubDate>Fri, 10 Feb 2023 18:55:00 +0800</pubDate>
       
-      <guid>https://sabicool.github.io/Braindump/tags/seedling/</guid>
+      <guid>https://sabicool-braindump.netlify.app/tags/seedling/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Medical-Placements</title>
-      <link>https://sabicool.github.io/Braindump/tags/medical-placements/</link>
+      <link>https://sabicool-braindump.netlify.app/tags/medical-placements/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://sabicool.github.io/Braindump/tags/medical-placements/</guid>
+      <guid>https://sabicool-braindump.netlify.app/tags/medical-placements/</guid>
       <description></description>
     </item>
     

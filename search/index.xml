@@ -2,9 +2,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Search me! on Sabiqul&#39;s Braindump</title>
-    <link>https://sabicool.github.io/Braindump/search/</link>
+    <link>https://sabicool-braindump.netlify.app/search/</link>
     <description>Recent content in Search me! on Sabiqul&#39;s Braindump</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://sabicool.github.io/Braindump/search/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://sabicool-braindump.netlify.app/search/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
