@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<meta name="author" content="Sabiqul Hoque">
+<link rel="stylesheet" href="https://zilongli.org/code/normalize.css" type="text/css" />
+<link rel="stylesheet" href="https://zilongli.org/code/tufte.css" type="text/css" />
+<link rel="stylesheet" href="https://zilongli.org/code/htmlize.css" type="text/css" />
+<link rel="stylesheet" href="https://zilongli.org/code/org.css" type="text/css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" integrity="sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script><style>
+           .home-button {
+             position: fixed;
+             top: 20px;
+             left: 20px;
+             font-size: 32px;
+             text-decoration: none;
+             z-index: 9999;
+             background: white;
+             padding: 10px;
+             border-radius: 5px;
+             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+             line-height: 1;
+             display: block;
+             opacity: 0.6;
+             transition: opacity 0.3s, box-shadow 0.3s;
+           }
+           .home-button:hover {
+             opacity: 1;
+             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+           }
+         </style>
+</head>
+<body id="top">
+<a href="../index.html" class="home-button" title="Home">🏠</a>
+<div id="body"><div id="container"><div id="content"><article><h1 class="title">Should you schedule all actionable items?</h1>
+<section><p>
+Mr Brownlee (MKBHD) himself said that he always sets a date in the episode about <a href="https://open.spotify.com/episode/7d2qd2rD4aKG54musxLm6q?si=c9e08a06ed0d43d6">productivity apps waveform podcast</a>. This way he doesn&rsquo;t have to review all his todos.
+</p>
+
+<p>
+Personally, I feel a robust review system of unscheduled tasks is better. This is because it means that you will not become overwhelmed with many overdue items you have missed because you have overscheduled. It only takes 1-2 days of not consistently doing what you eet out to feel completely overwhelmed and miserable.
+</p>
+
+<p>
+I use <code>org-ql</code> to easily create a list of this using this bit of elisp
+</p>
+<pre class="code"><code>(<span style="color: #cba6f7;">setq</span> <span style="color: #cdd6f4;">org-agenda-custom-commands</span>
+      <span style="color: #cba6f7;">`</span>(
+        (<span style="color: #a6e3a1;">"du"</span> <span style="color: #a6e3a1;">"Unscheduled Tasks"</span>
+         ((<span style="color: #fab387;">org-ql-block</span> <span style="color: #cba6f7;">'</span>(and (todo <span style="color: #a6e3a1;">"NEXT"</span>)
+                              (<span style="color: #fab387;">not</span> (scheduled t)))
+                        ((<span style="color: #cdd6f4;">org-ql-block-header</span> <span style="color: #a6e3a1;">"Unscheduled Tasks"</span>)
+                         (<span style="color: #cdd6f4;">org-super-agenda-groups</span>
+                          <span style="color: #cba6f7;">'</span>((<span style="color: #f38ba8;">:name</span> <span style="color: #a6e3a1;">"Has Deadline"</span>
+                             <span style="color: #f38ba8;">:deadline</span> t)
+                            (<span style="color: #f38ba8;">:auto-priority</span> t)))))))
+
+        )
+      )
+</code></pre>
+
+<p>
+In this view, I see my items with a deadline at the top and know to prioritise those first and then my remaining next items are scheduled by priority.
+</p>
+</section>
+<div id="outline-container-org3e2e2e6" class="outline-2 references">
+<h2 id="org3e2e2e6">Backlinks</h2>
+<section></section>
+<div id="outline-container-org1b057c4" class="outline-3">
+<h3 id="org1b057c4"><a href="20211030214309-productivity.html#ID-e1a9cb55-ef84-4329-810c-d885ed305a23">Productivity</a></h3>
+<div class="outline-text-3" id="text-org1b057c4">
+</div>
+<div id="outline-container-org1fdbc29" class="outline-4">
+<h4 id="org1fdbc29"><i>Other Topics</i></h4>
+<section><ul class="org-ul">
+<li><a href="20250914202958-adhd_is_blamed_as_the_reason_for_poor_productivity.html#ID-dad0496e-fba3-4ed9-9eb1-2aceb5eb0a71">ADHD is blamed as the reason for poor productivity</a></li>
+<li><a href="20251109210726-toxic_productivity.html#ID-22984e87-06b4-4e6a-b707-00cfb27e6ffd">Toxic Productivity</a></li>
+<li><a href="20251109210706-read_it_later_apps_make_you_more_productive.html#ID-0e76663b-1561-43b0-a031-5a280852dc12">Read it later apps make you more productive</a></li>
+<li><a href="20251109210644-should_you_schedule_all_actionable_items.html#ID-4b3097fe-3c41-4485-99a0-961a1e6c6286">Should you schedule all actionable items?</a></li>
+</ul>
+
+<p>
+Other Links
+</p>
+</section>
+</div>
+</div>
+</div>
+</article>
+<div style="margin-right:-15%; width:50%; float:right;">
+       <a href="#top"  title="Go to Top" style="visibility: visible; opacity: 0.5;">
+      <svg xmlns="http://www.w3.org/2000/svg" height="15" width="30" viewBox="0 0 12 6" fill="#f57627" stroke="none">
+      <path d="M12 6H0l6-6z"></path></svg> </a></div>
+<footer class="footer"  style="margin-top: 4em;">
+      <span>Powered by Emacs Org Mode</span>
+     </footer>
+     </div></div></div></body></html>
