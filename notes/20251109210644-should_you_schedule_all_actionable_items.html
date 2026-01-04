@@ -48,16 +48,16 @@ Personally, I feel a robust review system of unscheduled tasks is better. This i
 <p>
 I use <code>org-ql</code> to easily create a list of this using this bit of elisp
 </p>
-<pre class="code"><code>(<span style="color: #cba6f7;">setq</span> <span style="color: #cdd6f4;">org-agenda-custom-commands</span>
-      <span style="color: #cba6f7;">`</span>(
-        (<span style="color: #a6e3a1;">"du"</span> <span style="color: #a6e3a1;">"Unscheduled Tasks"</span>
-         ((<span style="color: #fab387;">org-ql-block</span> <span style="color: #cba6f7;">'</span>(and (todo <span style="color: #a6e3a1;">"NEXT"</span>)
-                              (<span style="color: #fab387;">not</span> (scheduled t)))
-                        ((<span style="color: #cdd6f4;">org-ql-block-header</span> <span style="color: #a6e3a1;">"Unscheduled Tasks"</span>)
-                         (<span style="color: #cdd6f4;">org-super-agenda-groups</span>
-                          <span style="color: #cba6f7;">'</span>((<span style="color: #f38ba8;">:name</span> <span style="color: #a6e3a1;">"Has Deadline"</span>
-                             <span style="color: #f38ba8;">:deadline</span> t)
-                            (<span style="color: #f38ba8;">:auto-priority</span> t)))))))
+<pre class="code"><code>(<span style="color: #8839ef;">setq</span> <span style="color: #4c4f69;">org-agenda-custom-commands</span>
+      <span style="color: #8839ef;">`</span>(
+        (<span style="color: #40a02b;">"du"</span> <span style="color: #40a02b;">"Unscheduled Tasks"</span>
+         ((<span style="color: #fe640b;">org-ql-block</span> <span style="color: #8839ef;">'</span>(and (todo <span style="color: #40a02b;">"NEXT"</span>)
+                              (<span style="color: #fe640b;">not</span> (scheduled t)))
+                        ((<span style="color: #4c4f69;">org-ql-block-header</span> <span style="color: #40a02b;">"Unscheduled Tasks"</span>)
+                         (<span style="color: #4c4f69;">org-super-agenda-groups</span>
+                          <span style="color: #8839ef;">'</span>((<span style="color: #d20f39;">:name</span> <span style="color: #40a02b;">"Has Deadline"</span>
+                             <span style="color: #d20f39;">:deadline</span> t)
+                            (<span style="color: #d20f39;">:auto-priority</span> t)))))))
 
         )
       )
@@ -67,6 +67,20 @@ I use <code>org-ql</code> to easily create a list of this using this bit of elis
 In this view, I see my items with a deadline at the top and know to prioritise those first and then my remaining next items are scheduled by priority.
 </p>
 </section>
+<div id="outline-container-org601ffe0" class="outline-2">
+<h2 id="org601ffe0">Follow On Thouguhts</h2>
+</div>
+<div id="outline-container-orgc15c74d" class="outline-2">
+<h2 id="orgc15c74d">Connected Ideas (Similar/Opposing Ideas)</h2>
+<section><ul class="org-ul">
+<li><a href="../journal/daily/2022/October/2022-10-03.html#ID-55db00c4-59d6-408f-9b7f-c06e9baba6be">Scheduling gym and exercise around placement and medical school</a></li>
+</ul>
+</section>
+</div>
+<div id="outline-container-org73b0103" class="outline-2">
+<h2 id="org73b0103">Sources</h2>
+</div>
+
 <div id="outline-container-org3e2e2e6" class="outline-2 references">
 <h2 id="org3e2e2e6">Backlinks</h2>
 <section></section>
