@@ -5,21 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Should you schedule all actionable items? · Braindump</title>
 <meta name="author" content="Sabiqul Hoque">
-<meta name="description" content="Mr Brownlee (MKBHD) himself said that he always sets a date in the episode about productivity apps waveform podcast. This way he doesn’t have to review all his todos.">
+<meta name="description" content="Mr Brownlee (MKBHD) himself said that he always sets a date in the episode about productivity apps waveform podcast. This way he doesn&rsquo;t have to review all his todos.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Braindump">
 <meta property="og:title" content="Should you schedule all actionable items?">
-<meta property="og:description" content="Mr Brownlee (MKBHD) himself said that he always sets a date in the episode about productivity apps waveform podcast. This way he doesn’t have to review all his todos.">
+<meta property="og:description" content="Mr Brownlee (MKBHD) himself said that he always sets a date in the episode about productivity apps waveform podcast. This way he doesn&rsquo;t have to review all his todos.">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../css/normalize.css">
 <link rel="stylesheet" href="../css/tufte.css">
 <link rel="stylesheet" href="../css/htmlize.css">
 <link rel="stylesheet" href="../css/org.css">
 <link rel="stylesheet" href="../css/custom.css">
+<link rel="alternate" type="application/atom+xml" title="Braindump" href="../feed.xml">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" integrity="sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
 <script>(function(){try{var t=localStorage.getItem('bd-theme');if(t){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+<script>(function(){try{var k='bd-scroll:'+location.pathname;var y=sessionStorage.getItem(k);if(y!==null&&!location.hash){history.scrollRestoration='manual';y=+y;var t0=Date.now(),stop=false;['wheel','touchstart','pointerdown','keydown'].forEach(function(e){addEventListener(e,function(){stop=true},{passive:true,once:true})});(function go(){if(stop)return;scrollTo(0,y);if(Math.abs(scrollY-y)>2&&Date.now()-t0<3000)requestAnimationFrame(go)})()}addEventListener('scroll',function(){try{sessionStorage.setItem(k,scrollY)}catch(e){}},{passive:true})}catch(e){}})();</script>
+<script src="../js/site.js" defer></script>
 </head>
 <body id="top">
 <header class="site-header">
@@ -27,49 +31,52 @@
 <a class="site-index" href="../sitemap.html">Index</a>
 <button class="theme-toggle" type="button" data-theme-toggle>Dark</button>
 </header>
-<div id="body"><div id="container"><div id="content"><article>
+<div id="body"><div id="container"><div id="content"><article class="note">
 <h1 class="title">Should you schedule all actionable items?</h1>
 <div class="info">9 November 2025<span class="sep">·</span>Sabiqul Hoque</div>
-<section><p>
-Mr Brownlee (MKBHD) himself said that he always sets a date in the episode about <a href="https://open.spotify.com/episode/7d2qd2rD4aKG54musxLm6q?si=c9e08a06ed0d43d6">productivity apps waveform podcast</a>. This way he doesn&rsquo;t have to review all his todos.
+<section><p class="dropcap" data-first-letter="M">
+Mr Brownlee (<abbr class="small-caps">MKBHD</abbr>) himself said that he always sets a date in the episode about <a href="https://open.spotify.com/episode/7d2qd2rD4aKG54musxLm6q?si=c9e08a06ed0d43d6">productivity apps waveform podcast</a>. This way he doesn&rsquo;t have to review all his todos.
 </p>
 
 <p>
-Personally, I feel a robust review system of unscheduled tasks is better. This is because it means that you will not become overwhelmed with many overdue items you have missed because you have overscheduled. It only takes 1-2 days of not consistently doing what you eet out to feel completely overwhelmed and miserable.
+Personally, I feel a robust review system of unscheduled tasks is better. This is because it means that you will not become overwhelmed with many overdue items you have missed because you have overscheduled. It only takes 1–2 days of not consistently doing what you eet out to feel completely overwhelmed and miserable.
 </p>
 
 <p>
 I use <code>org-ql</code> to easily create a list of this using this bit of elisp
 </p>
-<pre class="code"><code>(<span style="color: #8839ef;">setq</span> <span style="color: #4c4f69;">org-agenda-custom-commands</span>
-      <span style="color: #8839ef;">`</span>(
-        (<span style="color: #40a02b;">"du"</span> <span style="color: #40a02b;">"Unscheduled Tasks"</span>
-         ((<span style="color: #fe640b;">org-ql-block</span> <span style="color: #8839ef;">'</span>(and (todo <span style="color: #40a02b;">"NEXT"</span>)
-                              (<span style="color: #fe640b;">not</span> (scheduled t)))
-                        ((<span style="color: #4c4f69;">org-ql-block-header</span> <span style="color: #40a02b;">"Unscheduled Tasks"</span>)
-                         (<span style="color: #4c4f69;">org-super-agenda-groups</span>
-                          <span style="color: #8839ef;">'</span>((<span style="color: #d20f39;">:name</span> <span style="color: #40a02b;">"Has Deadline"</span>
-                             <span style="color: #d20f39;">:deadline</span> t)
-                            (<span style="color: #d20f39;">:auto-priority</span> t)))))))
+<pre class="code src src-emacs-lisp" data-lang="emacs-lisp"><code>(<span class="org-keyword">setq</span> <span class="org-variable-name">org-agenda-custom-commands</span>
+      <span class="org-highlight-quoted-quote">`</span>(
+        (<span class="org-string">"du"</span> <span class="org-string">"Unscheduled Tasks"</span>
+         ((<span class="org-constant">org-ql-block</span> <span class="org-highlight-quoted-quote">'</span>(and (todo <span class="org-string">"</span><span class="org-string"><span class="custom">NEXT</span></span><span class="org-string">"</span>)
+                              (<span class="org-constant">not</span> (scheduled t)))
+                        ((<span class="org-variable-name">org-ql-block-header</span> <span class="org-string">"Unscheduled Tasks"</span>)
+                         (<span class="org-variable-name">org-super-agenda-groups</span>
+                          <span class="org-highlight-quoted-quote">'</span>((<span class="org-builtin">:name</span> <span class="org-string">"Has Deadline"</span>
+                             <span class="org-builtin">:deadline</span> t)
+                            (<span class="org-builtin">:auto-priority</span> t)))))))
 
         )
       )
 </code></pre>
 
 <p>
-In this view, I see my items with a deadline at the top and know to prioritise those first and then my remaining next items are scheduled by priority.
+In this view, I see my items with a deadline at the top and know to prioritise those first and then my remaining next items are scheduled by priority. You can go further to group these tasks by location, device, effort or whatever else to allow for you to see only the tasks that you can complete in the conditions you have right now (e.g. while on a phone on the commute, <span class="private-link" title="This note is not public">Phone Emacs Setup</span>).
+</p>
+
+<p>
+However, such a view may cause decision fatigue. <a href="https://sachachua.com/blog/2024/10/shuffling-my-org-mode-unscheduled-tasks/">Sachachua&rsquo;s workflow on obtaining a random todo item</a> may provide a way to circumnavigate this. The user can then re‑roll the task, if they&rsquo;re not in the mood for the particular task by re‑running the command in question<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle"/><span class="sidenote">
+May provide a way to maintain <span class="private-link" title="This note is not public">momentum</span> when completing tasks.
+</span>.
 </p>
 </section>
-
 <div id="outline-container-orgc15c74d" class="outline-2">
-<h2 id="orgc15c74d">Connected Ideas (Similar/Opposing Ideas)</h2>
+<h2 id="orgc15c74d">Connected Ideas (Similar&#8202;/&#8202;Opposing Ideas)</h2>
 <section><ul class="org-ul">
 <li><span class="private-link" title="This note is not public">Scheduling gym and exercise around placement and medical school</span></li>
 </ul>
 </section>
 </div>
-
-
 <div id="outline-container-org3e2e2e6" class="outline-2 references">
 <h2 id="org3e2e2e6">Backlinks</h2>
 <section></section>
@@ -80,9 +87,9 @@ In this view, I see my items with a deadline at the top and know to prioritise t
 <div id="outline-container-org1fdbc29" class="outline-4">
 <h4 id="org1fdbc29"><i>Other Topics</i></h4>
 <section><ul class="org-ul">
-<li><span class="private-link" title="This note is not public">ADHD is blamed as the reason for poor productivity</span></li>
+<li><span class="private-link" title="This note is not public"><abbr class="small-caps">ADHD</abbr> is blamed as the reason for poor productivity</span></li>
 <li><span class="private-link" title="This note is not public">Toxic Productivity</span></li>
-<li><span class="private-link" title="This note is not public">Read it later apps make you more productive</span></li>
+<li><a href="20251109210706-read_it_later_apps_make_you_more_productive.html#ID-0e76663b-1561-43b0-a031-5a280852dc12">Read it later apps make you more productive</a></li>
 <li><a href="20251109210644-should_you_schedule_all_actionable_items.html#ID-4b3097fe-3c41-4485-99a0-961a1e6c6286">Should you schedule all actionable items?</a></li>
 </ul>
 
@@ -93,6 +100,20 @@ Other Links
 </div>
 </div>
 </div>
+<!-- Footnotes --><!-- 
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">
+May provide a way to maintain <span class="private-link" title="This note is not public">momentum</span> when completing tasks.
+</p></div></div>
+
+ --><div class="tailpiece" aria-hidden="true"><svg viewBox="0 0 64 14" width="64" height="14" fill="currentColor"><path d="M32 1 L38 7 L32 13 L26 7 Z"/><path d="M12 4.5 L15 7 L12 9.5 L9 7 Z"/><path d="M52 4.5 L55 7 L52 9.5 L49 7 Z"/><circle cx="1.5" cy="7" r="1.2"/><circle cx="62.5" cy="7" r="1.2"/></svg></div>
+<details class="cite-this"><summary>Cite this note</summary>
+<pre>@misc{hoque2025should,
+  author = {Sabiqul Hoque},
+  title = {Should you schedule all actionable items?},
+  year = {2025},
+  howpublished = {\url{https://sabicool.github.io/Braindump/notes/20251109210644-should_you_schedule_all_actionable_items.html}},
+  note = {Braindump}
+}</pre></details>
 </article>
 <footer class="footer">
 <span>Notes by <a class="site-author" href="../index.html">Sabiqul Hoque</a></span>
@@ -100,26 +121,4 @@ Other Links
 <a class="goto-top" href="#top" title="Back to top">↑ Top</a>
 </footer>
 </div></div></div>
-<script>
-(function () {
-  var root = document.documentElement;
-  var btn = document.querySelector('[data-theme-toggle]');
-  if (!btn) return;
-  function current() {
-    return root.getAttribute('data-theme') ||
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  }
-  function label() {
-    btn.textContent = current() === 'dark' ? 'Light' : 'Dark';
-    btn.setAttribute('aria-label', 'Switch to ' + (current() === 'dark' ? 'light' : 'dark') + ' theme');
-  }
-  label();
-  btn.addEventListener('click', function () {
-    var next = current() === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('bd-theme', next); } catch (e) {}
-    label();
-  });
-})();
-</script>
 </body></html>
