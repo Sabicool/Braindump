@@ -69,6 +69,18 @@
    2. Ground
    -------------------------------------------------------------------------- */
 
+/* A fallback face scaled to ET Book's width, so text set before the
+   webfont arrives occupies the same lines and nothing shifts on swap.
+   91.4% measured against Palatino on macOS; Georgia is within 0.1%. */
+@font-face {
+    font-family: "et-book-fallback";
+    src: local("Palatino"), local("Palatino Linotype"), local("Book Antiqua"), local("Georgia");
+    size-adjust: 91.4%;
+    ascent-override: 92%;
+    descent-override: 24%;
+    line-gap-override: 0%;
+}
+
 html {
     color-scheme: light dark;
 }
@@ -80,6 +92,9 @@ body {
        off the right. Pull the column back toward centre on wide screens. */
     max-width: 1180px;
     padding-left: 10%;
+    font-family: et-book, "et-book-fallback", Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    text-wrap: pretty;
+    hyphens: manual;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -94,6 +109,10 @@ body {
 }
 
 ::selection { background: var(--selection); }
+
+/* Anything we give a display value to must still honour the hidden
+   attribute, which the UA sheet applies at lower specificity. */
+[hidden] { display: none !important; }
 
 /* --------------------------------------------------------------------------
    3. Links
@@ -270,7 +289,27 @@ h1.title {
 h2, h3, h4, h5, h6 {
     max-width: var(--measure);
     letter-spacing: -0.003em;
+    text-wrap: balance;
+    position: relative;
 }
+
+h1.title { text-wrap: balance; }
+
+/* Section anchors, added by site.js */
+h2 .anchor, h3 .anchor {
+    position: absolute;
+    left: -1.1em;
+    top: 0;
+    font-style: normal;
+    font-size: 0.7em;
+    line-height: inherit;
+    color: var(--rule-strong);
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+}
+h2:hover .anchor, h3:hover .anchor, .anchor:focus-visible { opacity: 1; }
+.anchor:hover { color: var(--accent); }
 
 h2 { font-size: 2.0rem; margin-top: 3.2rem; margin-bottom: 1.1rem; line-height: 1.15; }
 h3 { font-size: 1.55rem; margin-top: 2.4rem; margin-bottom: 0.9rem; line-height: 1.2; }
@@ -349,6 +388,214 @@ blockquote {
 
 div.epigraph { margin: 3rem 0; }
 div.epigraph > blockquote { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+
+/* --------------------------------------------------------------------------
+   7b. Typographic details (exporter marks these up; see +org-publish.el)
+   -------------------------------------------------------------------------- */
+
+/* Acronyms: letters stay upper case in the markup, so copied text is
+   unchanged; the browser sets them as small caps. */
+abbr.small-caps {
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "c2sc", "smcp";
+    letter-spacing: 0.035em;
+    text-decoration: none;
+    border: 0;
+}
+
+/* Slanted fractions built from sup/sub around a fraction slash */
+.fraction { white-space: nowrap; }
+.fraction sup, .fraction sub {
+    font-size: 0.68em;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+.fraction sup { top: -0.45em; }
+.fraction sub { top: 0.12em; }
+
+/* Illuminated dropcap on the opening paragraph of a note.
+
+   Two layers from two fonts, after turntrout.com: the ornament (EB Garamond
+   Initials, the "F1" cut) is drawn by ::before from data-first-letter, and
+   the plain letter (the "F2" cut) by ::first-letter floated over it.  Both
+   fonts are OFL; the letter-only subsets are the ones turntrout.com serves. */
+@font-face {
+    font-family: "EBGaramondInitialsF1";
+    src: url("fonts/EBGaramondInitialsF1.woff2") format("woff2");
+    font-display: swap;
+    unicode-range: U+20, U+41-5A;
+}
+@font-face {
+    font-family: "EBGaramondInitialsF2";
+    src: url("fonts/EBGaramondInitialsF2.woff2") format("woff2");
+    font-display: swap;
+    unicode-range: U+20, U+41-5A;
+}
+
+article.note {
+    --dropcap-size: 6rem;        /* spans three lines of body copy */
+    --dropcap-offset: 0.1rem;
+    --dropcap-ornament: var(--accent-soft);
+}
+
+p.dropcap {
+    position: relative;
+    min-height: calc(var(--dropcap-size) + 0.3rem);
+}
+p.dropcap::before {
+    content: attr(data-first-letter);
+    float: left;
+    width: var(--dropcap-size);
+    padding-top: var(--dropcap-offset);
+    padding-right: 0.1em;
+    font-family: "EBGaramondInitialsF1", et-book, serif;
+    font-size: var(--dropcap-size);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--dropcap-ornament);
+}
+p.dropcap::first-letter {
+    float: left;
+    margin-left: calc(-1 * var(--dropcap-size) - 0.1em);
+    padding-top: var(--dropcap-offset);
+    padding-right: 0.1em;
+    font-family: "EBGaramondInitialsF2", et-book, serif;
+    font-size: var(--dropcap-size);
+    font-style: normal !important;
+    font-weight: 400;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--ink);
+}
+
+/* Rule tailpiece: a small ornament between two rules that fade outward.
+   The element is emitted by the exporter (my/braindump-tailpiece). */
+.tailpiece {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    width: var(--measure);
+    max-width: 100%;
+    margin: 3.2rem 0 0.5rem;
+    color: var(--rule-strong);
+}
+.tailpiece::before,
+.tailpiece::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+}
+.tailpiece::before { background: linear-gradient(to right, transparent, var(--rule-strong)); }
+.tailpiece::after  { background: linear-gradient(to left,  transparent, var(--rule-strong)); }
+.tailpiece svg { flex: 0 0 auto; display: block; }
+
+/* Cite-this block */
+.cite-this {
+    width: var(--measure);
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 2.2rem 0 0;
+    padding: 0;
+    border: 0;
+    border-top: 1px solid var(--rule);
+}
+.cite-this summary {
+    padding: 0.8rem 0 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    cursor: pointer;
+    list-style: none;
+}
+.cite-this summary::-webkit-details-marker { display: none; }
+.cite-this summary:hover { color: var(--accent); }
+.cite-this pre {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0.6rem 0 0;
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    background: var(--bg-sunk);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   7c. Flashcards (:ANKI-CARD: drawers)
+   -------------------------------------------------------------------------- */
+
+.anki-card {
+    position: relative;
+    width: var(--measure);
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 1.8rem 0;
+    padding: 1.1rem 1.3rem 1rem;
+    background: var(--bg-sunk);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent-soft);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+.anki-card:hover, .anki-card:focus-visible { border-left-color: var(--accent); outline: none; }
+.anki-card:focus-visible { box-shadow: 0 0 0 2px var(--accent-soft); }
+
+.anki-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+.anki-card p { width: 100%; margin: 0.3rem 0; line-height: 1.5; }
+.anki-front p { font-size: 1.3rem; }
+.anki-back { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px dashed var(--rule-strong); }
+.anki-extra { margin-top: 0.5rem; color: var(--ink-muted); }
+.anki-extra p { font-size: 1.15rem; }
+
+.anki-reveal {
+    display: inline-block;
+    margin-top: 0.8rem;
+    padding: 0.25rem 0.8rem;
+    font: inherit;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: transparent;
+    border: 1px solid var(--accent-soft);
+    border-radius: 2px;
+    cursor: pointer;
+}
+.anki-reveal:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+/* Cloze blanks: a ruled gap until revealed */
+.cloze {
+    display: inline-block;
+    min-width: 4ch;
+    padding: 0 0.3em;
+    border-bottom: 1.5px solid var(--accent);
+    color: transparent;
+    position: relative;
+}
+.cloze::after {
+    content: attr(data-hint);
+    position: absolute;
+    left: 0; right: 0;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 0.8em;
+    font-style: italic;
+}
+.is-revealed .cloze { color: var(--accent); border-bottom-color: transparent; }
+.is-revealed .cloze::after { content: none; }
 
 /* --------------------------------------------------------------------------
    8. Sidenotes
@@ -450,6 +697,22 @@ label.sidenote-number { color: var(--accent); }
 
 .references .outline-4 { margin-top: 0.6rem; }
 
+/* Bibliography emitted by #+print_bibliography. org.css lets it run to 80%
+   of the page, past the sidenote gutter. */
+section > .csl-bib-body,
+.csl-bib-body {
+    width: var(--measure);
+    max-width: 100%;
+    margin: 1.4rem 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-size: 1.15rem;
+    line-height: 1.5;
+    color: var(--ink-muted);
+}
+
+.csl-entry + .csl-entry { margin-top: 0.5rem; }
+
 /* --------------------------------------------------------------------------
    10. Tables
 
@@ -496,13 +759,16 @@ section > table th.org-left { text-align: left; }
    everything else on the page.
    -------------------------------------------------------------------------- */
 
-code {
+code,
+:not(pre) > code {          /* org.css gives inline code a #DDD border and #333 text */
     border: 0;
     border-radius: 2px;
+    margin: 0;
     background: var(--bg-sunk);
     color: var(--ink);
-    padding: 0.1em 0.35em;
-    font-size: 0.92em;
+    padding: 0.08em 0.35em;
+    /* Monospace sets wide; 0.8em of body copy reads level with it. */
+    font-size: 0.8em;
 }
 
 pre > code,
@@ -518,6 +784,114 @@ pre.example {
 
 pre > code { display: block; }
 
+pre.code {
+    position: relative;
+    width: var(--measure);
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 1.6rem 0;
+    padding: 0;
+}
+pre.code > code {
+    width: 100%;
+    margin: 0;
+    padding: 1.1rem 1.1rem 0.9rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    tab-size: 4;
+}
+/* org.css draws its own label with pre>code:before; replace it */
+pre > code::before { content: none !important; }
+pre.code[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 0.45rem;
+    right: 0.7rem;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    pointer-events: none;
+    z-index: 1;                 /* above the <code> background */
+}
+pre.code .code-copy {
+    position: absolute;
+    z-index: 2;
+    top: 0.3rem;
+    right: 0.5rem;
+    padding: 0.15rem 0.5rem;
+    font: inherit;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    background: var(--bg-sunk);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+}
+pre.code:hover .code-copy, pre.code .code-copy:focus-visible { opacity: 1; }
+pre.code .code-copy:hover { color: var(--accent); border-color: var(--accent-soft); }
+pre.code:hover[data-lang]::before { opacity: 0; }
+
+/* Syntax palette — htmlize emits face classes (org-html-htmlize-output-type
+   'css).  Warm, low-saturation tones that sit on both grounds. */
+:root {
+    --syn-keyword:  #7a3e9d;
+    --syn-builtin:  #5b4a9a;
+    --syn-string:   #8a5a1a;
+    --syn-comment:  #8f8a7c;
+    --syn-function: #1f5f8b;
+    --syn-variable: #7d4a2a;
+    --syn-constant: #1d7a6e;
+    --syn-type:     #3b7a3b;
+    --syn-doc:      #8a5a1a;
+    --syn-warning:  #b33a2b;
+}
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --syn-keyword:  #c9a2e6;
+        --syn-builtin:  #b3a6ec;
+        --syn-string:   #d9b072;
+        --syn-comment:  #8c8778;
+        --syn-function: #8fc4e8;
+        --syn-variable: #e0a884;
+        --syn-constant: #8fd3c4;
+        --syn-type:     #a6d49a;
+        --syn-doc:      #d9b072;
+        --syn-warning:  #ef8a78;
+    }
+}
+:root[data-theme="dark"] {
+    --syn-keyword:  #c9a2e6;
+    --syn-builtin:  #b3a6ec;
+    --syn-string:   #d9b072;
+    --syn-comment:  #8c8778;
+    --syn-function: #8fc4e8;
+    --syn-variable: #e0a884;
+    --syn-constant: #8fd3c4;
+    --syn-type:     #a6d49a;
+    --syn-doc:      #d9b072;
+    --syn-warning:  #ef8a78;
+}
+pre.code .org-keyword               { color: var(--syn-keyword); }
+pre.code .org-builtin               { color: var(--syn-builtin); }
+pre.code .org-string                { color: var(--syn-string); }
+pre.code .org-doc                   { color: var(--syn-doc); font-style: italic; }
+pre.code .org-comment,
+pre.code .org-comment-delimiter     { color: var(--syn-comment); font-style: italic; }
+pre.code .org-function-name         { color: var(--syn-function); }
+pre.code .org-variable-name         { color: var(--syn-variable); }
+pre.code .org-constant              { color: var(--syn-constant); }
+pre.code .org-type                  { color: var(--syn-type); }
+pre.code .org-warning               { color: var(--syn-warning); }
+pre.code .org-preprocessor          { color: var(--syn-builtin); }
+pre.code .org-negation-char         { color: var(--syn-warning); }
+pre.code [class^="org-"]            { background: transparent; }
+
 summary { color: var(--accent); }
 
 details {
@@ -525,6 +899,52 @@ details {
     border: 1px solid var(--rule);
     border-radius: 3px;
     padding: 0.7rem 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   11b. Images
+   -------------------------------------------------------------------------- */
+
+img { height: auto; }   /* width/height attrs reserve space; keep ratio */
+
+/* Diagrams and line art drawn for a light ground: add
+   #+ATTR_HTML: :class invert  to the image in org and it flips in dark mode. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) img.invert { filter: invert(0.92) hue-rotate(180deg); }
+}
+:root[data-theme="dark"] img.invert { filter: invert(0.92) hue-rotate(180deg); }
+
+/* --------------------------------------------------------------------------
+   11c. Link previews (site.js)
+   -------------------------------------------------------------------------- */
+
+.popover {
+    position: absolute;
+    z-index: 50;
+    width: 22rem;
+    max-width: calc(100vw - 2rem);
+    box-sizing: border-box;
+    padding: 0.9rem 1.1rem 1rem;
+    background: var(--bg);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+    font-size: 1.05rem;
+    line-height: 1.45;
+    pointer-events: auto;
+}
+.popover-title { font-size: 1.2rem; line-height: 1.3; margin-bottom: 0.2rem; }
+.popover-meta {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.4rem;
+}
+.popover p { margin: 0; color: var(--ink-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 
 /* --------------------------------------------------------------------------
@@ -591,8 +1011,9 @@ details {
 
 .note-index > li {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
-    gap: 1rem;
+    gap: 0 1rem;
     padding: 0.6rem 0;
     margin-top: 0;
     border-bottom: 1px solid var(--rule);
@@ -610,6 +1031,15 @@ details {
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--ink-faint);
+}
+
+.note-summary {
+    flex-basis: 100%;
+    width: 100%;
+    margin: 0.2rem 0 0;
+    font-size: 1.05rem;
+    line-height: 1.45;
+    color: var(--ink-muted);
 }
 
 .note-index-empty {
@@ -650,6 +1080,11 @@ details {
     pre.example { width: 100%; }
 
     section > table { max-width: 100%; }
+    section > .csl-bib-body,
+    .csl-bib-body { width: 100%; }
+    .anki-card, .cite-this, pre.code, .tailpiece { width: 100%; }
+    h2 .anchor, h3 .anchor { position: static; margin-left: 0.4em; }
+    article.note { --dropcap-size: 4.4rem; }
 
     .site-header { gap: 1rem; font-size: 0.95rem; }
     .site-header .site-title { font-size: 1.2rem; }
@@ -670,7 +1105,13 @@ details {
     .site-header,
     .theme-toggle,
     .goto-top,
-    .note-search { display: none; }
+    .note-search,
+    .code-copy,
+    .anchor,
+    .popover,
+    .cite-this { display: none; }
+    .anki-back, .anki-extra { display: block !important; }
+    .cloze { color: inherit; }
 
     body { background: #fff; color: #000; padding-left: 0; width: 100%; }
     a:link, a:visited { text-decoration: none; }
