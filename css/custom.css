@@ -1,0 +1,678 @@
+/* ==========================================================================
+   Braindump — custom layer
+   Loaded last, after normalize.css, tufte.css, htmlize.css and org.css.
+   Everything here is either a token definition or a deliberate override of
+   one of those files. Upstream files are kept pristine so they can be
+   re-vendored without losing this work.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+    /* Ground and ink */
+    --bg:            #fffff8;   /* Tufte ivory */
+    --bg-sunk:       #faf9ee;   /* cards, backlink wells */
+    --ink:           #111111;
+    --ink-muted:     #6b6862;
+    --ink-faint:     #93908a;
+
+    /* Ornament */
+    --rule:          #d8d5c8;
+    --rule-strong:   #b3afa0;
+    --accent:        #9a3b1b;   /* muted brick; hover, markers, focus */
+    --accent-soft:   #c98f6a;
+    --selection:     #f3e2c7;
+
+    /* Link underlines sit lighter than the text they belong to */
+    --link-underline: #c3bfae;
+
+    --measure:       55%;       /* Tufte's text column */
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg:            #171613;   /* warm near-black, suits ET Book */
+        --bg-sunk:       #1e1d19;
+        --ink:           #e6e2d7;
+        --ink-muted:     #a09b8e;
+        --ink-faint:     #7c776c;
+
+        --rule:          #33312b;
+        --rule-strong:   #4b483f;
+        --accent:        #e08a62;
+        --accent-soft:   #8a5f47;
+        --selection:     #453a26;
+
+        --link-underline: #565146;
+    }
+}
+
+:root[data-theme="dark"] {
+    --bg:            #171613;
+    --bg-sunk:       #1e1d19;
+    --ink:           #e6e2d7;
+    --ink-muted:     #a09b8e;
+    --ink-faint:     #7c776c;
+
+    --rule:          #33312b;
+    --rule-strong:   #4b483f;
+    --accent:        #e08a62;
+    --accent-soft:   #8a5f47;
+    --selection:     #453a26;
+
+    --link-underline: #565146;
+}
+
+/* --------------------------------------------------------------------------
+   2. Ground
+   -------------------------------------------------------------------------- */
+
+html {
+    color-scheme: light dark;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--ink);
+    /* Tufte reserves a fat left gutter it never uses; the margin notes hang
+       off the right. Pull the column back toward centre on wide screens. */
+    max-width: 1180px;
+    padding-left: 10%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* tufte.css hard-codes the old #151515 dark ground; neutralise it so the
+   tokens above are the single source of truth. */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: var(--bg);
+        color: var(--ink);
+    }
+}
+
+::selection { background: var(--selection); }
+
+/* --------------------------------------------------------------------------
+   3. Links
+
+   tufte.css fakes descender-clearing underlines with stacked background
+   gradients plus a twelve-stop text-shadow, all hard-coded to #fffff8. That
+   breaks the moment the ground colour changes, and it is no longer needed:
+   text-decoration-skip-ink does the same job natively. Rip it out.
+   -------------------------------------------------------------------------- */
+
+a:link,
+a:visited,
+.tufte-underline,
+.hover-tufte-underline:hover {
+    background: none;
+    text-shadow: none;
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 0.055em;
+    text-decoration-color: var(--link-underline);
+    text-underline-offset: 0.18em;
+    text-decoration-skip-ink: auto;
+    transition: color 0.12s ease, text-decoration-color 0.12s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    a:link,
+    .tufte-underline,
+    .hover-tufte-underline:hover {
+        text-shadow: none;
+    }
+}
+
+a:hover,
+a:focus-visible {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+}
+
+a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+}
+
+a:link::selection,
+a:link::-moz-selection {
+    text-shadow: none;
+    background: var(--selection);
+}
+
+/* Index lists — the sitemap, "Related", "Other Topics", any bare list of
+   note links. Underlining every item turns these into a wall of rules;
+   the list itself already signals that they are links. */
+section > ul a:link,
+section > ul a:visited,
+section > ol a:link,
+section > ol a:visited,
+.note-index a:link,
+.note-index a:visited {
+    text-decoration: none;
+}
+
+section > ul a:hover,
+section > ol a:hover,
+.note-index a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 0.055em;
+    text-underline-offset: 0.18em;
+    text-decoration-color: var(--accent);
+}
+
+/* Links whose target is not published. Emitted by the exporter in place of
+   an <a> so the reader never lands on a 404. */
+.private-link {
+    color: var(--ink-muted);
+    border-bottom: 1px dotted var(--rule-strong);
+    cursor: help;
+}
+
+/* --------------------------------------------------------------------------
+   4. Site header
+   -------------------------------------------------------------------------- */
+
+.site-header {
+    width: var(--measure);
+    max-width: 100%;
+    margin: 2.5rem 0 0;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: baseline;
+    gap: 1.4rem;
+    font-size: 1.05rem;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.site-header a:link,
+.site-header a:visited {
+    text-decoration: none;
+    color: var(--ink-muted);
+}
+
+.site-header a:hover {
+    color: var(--accent);
+}
+
+.site-header .site-title {
+    font-variant: small-caps;
+    text-transform: none;
+    letter-spacing: 0.04em;
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin-right: auto;
+}
+
+.site-header .site-title:hover {
+    color: var(--accent);
+}
+
+.theme-toggle {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    color: var(--ink-muted);
+    cursor: pointer;
+    letter-spacing: inherit;
+    text-transform: inherit;
+}
+
+.theme-toggle:hover { color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   5. Title block
+   -------------------------------------------------------------------------- */
+
+h1.title {
+    margin-top: 2.6rem;
+    margin-bottom: 0.6rem;
+    font-size: 2.9rem;
+    line-height: 1.08;
+    letter-spacing: -0.005em;
+    max-width: var(--measure);
+}
+
+/* The date/author line. Was a raw org timestamp in body-copy size. */
+.info {
+    width: var(--measure);
+    margin: 0 0 2.6rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: 1.0rem;
+    line-height: 1.5;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+.info i,
+.info em { font-style: normal; }
+
+.info .sep { margin: 0 0.5em; color: var(--rule-strong); }
+
+/* --------------------------------------------------------------------------
+   6. Headings and outline rhythm
+
+   Org wraps every heading in .outline-N containers, so vertical rhythm has
+   to be set on the containers, not just the h2/h3 elements.
+   -------------------------------------------------------------------------- */
+
+h2, h3, h4, h5, h6 {
+    max-width: var(--measure);
+    letter-spacing: -0.003em;
+}
+
+h2 { font-size: 2.0rem; margin-top: 3.2rem; margin-bottom: 1.1rem; line-height: 1.15; }
+h3 { font-size: 1.55rem; margin-top: 2.4rem; margin-bottom: 0.9rem; line-height: 1.2; }
+
+h4 {
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 400;
+    margin-top: 1.9rem;
+    margin-bottom: 0.7rem;
+    line-height: 1.25;
+}
+
+.outline-2 > h2 {
+    padding-top: 0.5rem;
+}
+
+/* Headings that are themselves links (backlink sources, MoC lists) */
+h2 a:link, h3 a:link, h4 a:link,
+h2 a:visited, h3 a:visited, h4 a:visited {
+    text-decoration: none;
+}
+
+h2 a:hover, h3 a:hover, h4 a:hover {
+    color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   7. Body copy
+   -------------------------------------------------------------------------- */
+
+section > p { line-height: 1.62; }
+
+section > ul,
+section > ol {
+    line-height: 1.55;
+}
+
+li:not(:first-child) { margin-top: 0.4rem; }
+
+section > ul { list-style: none; -webkit-padding-start: 0; padding-left: 0; }
+
+section > ul > li {
+    padding-left: 1.15em;
+    position: relative;
+}
+
+section > ul > li::before {
+    content: "";
+    position: absolute;
+    left: 0.15em;
+    top: 0.72em;
+    width: 0.32em;
+    height: 0.32em;
+    border-radius: 50%;
+    background: var(--accent-soft);
+}
+
+/* Nested lists keep normal markers */
+section > ul ul { list-style: disc; padding-left: 1.2em; }
+section > ul ul > li { padding-left: 0; }
+section > ul ul > li::before { content: none; }
+
+hr {
+    border-top: 1px solid var(--rule);
+    width: var(--measure);
+    margin: 2.5rem 0;
+}
+
+blockquote {
+    border-left: 2px solid var(--rule-strong);
+    padding-left: 1.2rem;
+    margin-left: 0;
+    color: var(--ink-muted);
+}
+
+div.epigraph { margin: 3rem 0; }
+div.epigraph > blockquote { margin-top: 1.5rem; margin-bottom: 1.5rem; }
+
+/* --------------------------------------------------------------------------
+   8. Sidenotes
+   -------------------------------------------------------------------------- */
+
+.sidenote,
+.marginnote {
+    color: var(--ink-muted);
+    line-height: 1.45;
+}
+
+.sidenote-number:after,
+.sidenote:before {
+    color: var(--accent);
+}
+
+label.sidenote-number { color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   9. Backlinks
+
+   The exporter appends these under a "Backlinks" heading with
+   HTML_CONTAINER_CLASS: references. Untouched, they render as h2/h3/h4
+   identical to real content and read as part of the note. Demote the whole
+   block and set it apart.
+   -------------------------------------------------------------------------- */
+
+.references {
+    width: var(--measure);
+    max-width: 100%;
+    margin-top: 4.5rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule-strong);
+}
+
+.references > h2 {
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+    font-style: normal;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 1.6rem;
+}
+
+/* Each backlink source becomes a card */
+.references .outline-3 {
+    background: var(--bg-sunk);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1rem 1.2rem 0.85rem;
+    margin-bottom: 0.9rem;
+}
+
+.references h2,
+.references h3,
+.references h4 { max-width: 100%; }
+
+.references .outline-3 > h3 {
+    font-family: et-book, Palatino, Georgia, serif;
+    font-style: normal;
+    font-size: 1.25rem;
+    margin: 0 0 0.35rem;
+    line-height: 1.3;
+}
+
+.references .outline-3 > h3 a:link,
+.references .outline-3 > h3 a:visited {
+    text-decoration: none;
+}
+
+.references .outline-3 > h3 a:hover { color: var(--accent); }
+
+/* The "outline" breadcrumb org inserts as an italic h4 */
+.references .outline-4 > h4 {
+    font-size: 0.9rem;
+    font-style: normal;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 0.4rem;
+}
+
+.references .outline-4 > h4 i,
+.references .outline-4 > h4 em { font-style: normal; }
+
+/* Context snippet */
+.references section > p,
+.references section > ul,
+.references section > ol {
+    width: 100%;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    color: var(--ink-muted);
+    margin: 0.4rem 0;
+}
+
+.references section > ul > li::before { background: var(--rule-strong); }
+
+.references .outline-4 { margin-top: 0.6rem; }
+
+/* --------------------------------------------------------------------------
+   10. Tables
+
+   org.css centres everything and draws a vertical rule between every cell.
+   Quieten it, and let wide tables scroll instead of blowing out the page.
+   -------------------------------------------------------------------------- */
+
+section > table {
+    display: block;
+    overflow-x: auto;
+    max-width: var(--measure);
+    width: max-content;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+    font-size: 1.05rem;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+section > table thead { border-bottom: 1px solid var(--rule-strong); }
+section > table tr { border-top: 1px solid var(--rule); }
+section > table tr:first-child { border-top: 0; }
+section > table td + td,
+section > table th + th { border-left: 0; }
+
+section > table th {
+    font-weight: 400;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    text-align: left;
+}
+
+section > table td,
+section > table th { padding: 0.45em 1.1em 0.45em 0; }
+
+section > table td.org-left,
+section > table th.org-left { text-align: left; }
+
+/* --------------------------------------------------------------------------
+   11. Code
+
+   org.css gives inline code a yellow rounded border, which fights with
+   everything else on the page.
+   -------------------------------------------------------------------------- */
+
+code {
+    border: 0;
+    border-radius: 2px;
+    background: var(--bg-sunk);
+    color: var(--ink);
+    padding: 0.1em 0.35em;
+    font-size: 0.92em;
+}
+
+pre > code,
+pre.example {
+    background: var(--bg-sunk);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 0.9rem 1.1rem;
+    margin-left: 0;
+    width: var(--measure);
+    box-sizing: border-box;
+}
+
+pre > code { display: block; }
+
+summary { color: var(--accent); }
+
+details {
+    width: var(--measure);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   12. Footer / go-to-top
+   -------------------------------------------------------------------------- */
+
+.footer {
+    width: var(--measure);
+    max-width: 100%;
+    margin-top: 5rem !important;
+    padding: 1.2rem 0 3rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.footer a:link,
+.footer a:visited { text-decoration: none; color: var(--ink-faint); }
+.footer a:hover { color: var(--accent); }
+
+.goto-top {
+    margin-left: auto;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+/* --------------------------------------------------------------------------
+   13. Note index / search (sitemap page)
+   -------------------------------------------------------------------------- */
+
+.note-search {
+    width: var(--measure);
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 2rem;
+    padding: 0.6rem 0.2rem;
+    font-family: inherit;
+    font-size: 1.25rem;
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--rule-strong);
+}
+
+.note-search::placeholder { color: var(--ink-faint); }
+.note-search:focus {
+    outline: none;
+    border-bottom-color: var(--accent);
+}
+
+.note-index {
+    width: var(--measure);
+    max-width: 100%;
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    -webkit-padding-start: 0;
+}
+
+.note-index > li {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    margin-top: 0;
+    border-bottom: 1px solid var(--rule);
+}
+
+.note-index > li::before { content: none; }
+.note-index > li:last-child { border-bottom: 0; }
+
+.note-index > li > a { flex: 1 1 auto; }
+
+.note-index time {
+    flex: 0 0 auto;
+    font-size: 0.9rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--ink-faint);
+}
+
+.note-index-empty {
+    color: var(--ink-faint);
+    font-style: italic;
+}
+
+.note-count {
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   14. Narrow screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 760px) {
+    body { padding-left: 7%; padding-right: 7%; width: 86%; }
+
+    h1.title { font-size: 2.2rem; max-width: 100%; }
+    h2 { font-size: 1.7rem; }
+    h3 { font-size: 1.4rem; }
+    h2, h3, h4, h5, h6 { max-width: 100%; }
+
+    .site-header,
+    .info,
+    .references,
+    .footer,
+    .note-index,
+    .note-search,
+    .note-count,
+    hr,
+    details,
+    pre > code,
+    pre.example { width: 100%; }
+
+    section > table { max-width: 100%; }
+
+    .site-header { gap: 1rem; font-size: 0.95rem; }
+    .site-header .site-title { font-size: 1.2rem; }
+
+    /* Stack the date under the title rather than squeezing the column. */
+    .note-index > li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.15rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   15. Print
+   -------------------------------------------------------------------------- */
+
+@media print {
+    .site-header,
+    .theme-toggle,
+    .goto-top,
+    .note-search { display: none; }
+
+    body { background: #fff; color: #000; padding-left: 0; width: 100%; }
+    a:link, a:visited { text-decoration: none; }
+    .references { break-inside: avoid; }
+}

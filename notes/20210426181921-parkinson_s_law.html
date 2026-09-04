@@ -2,57 +2,67 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parkinson’s Law · Braindump</title>
 <meta name="author" content="Sabiqul Hoque">
-<link rel="stylesheet" href="https://zilongli.org/code/normalize.css" type="text/css" />
-<link rel="stylesheet" href="https://zilongli.org/code/tufte.css" type="text/css" />
-<link rel="stylesheet" href="https://zilongli.org/code/htmlize.css" type="text/css" />
-<link rel="stylesheet" href="https://zilongli.org/code/org.css" type="text/css" />
+<meta name="description" content="This is the idea that work expands to fill the time you allocate to it.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Braindump">
+<meta property="og:title" content="Parkinson’s Law">
+<meta property="og:description" content="This is the idea that work expands to fill the time you allocate to it.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/normalize.css">
+<link rel="stylesheet" href="../css/tufte.css">
+<link rel="stylesheet" href="../css/htmlize.css">
+<link rel="stylesheet" href="../css/org.css">
+<link rel="stylesheet" href="../css/custom.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" integrity="sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
-    onload="renderMathInElement(document.body);"></script><style>
-           .home-button {
-             position: fixed;
-             top: 20px;
-             left: 20px;
-             font-size: 32px;
-             text-decoration: none;
-             z-index: 9999;
-             background: white;
-             padding: 10px;
-             border-radius: 5px;
-             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-             line-height: 1;
-             display: block;
-             opacity: 0.6;
-             transition: opacity 0.3s, box-shadow 0.3s;
-           }
-           .home-button:hover {
-             opacity: 1;
-             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-           }
-         </style>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script>(function(){try{var t=localStorage.getItem('bd-theme');if(t){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
 </head>
 <body id="top">
-<a href="../index.html" class="home-button" title="Home">🏠</a>
-<div id="body"><div id="container"><div id="content"><article><h1 class="title">Parkinson&rsquo;s Law</h1>
+<header class="site-header">
+<a class="site-title" href="../index.html">Braindump</a>
+<a class="site-index" href="../sitemap.html">Index</a>
+<button class="theme-toggle" type="button" data-theme-toggle>Dark</button>
+</header>
+<div id="body"><div id="container"><div id="content"><article>
+<h1 class="title">Parkinson&rsquo;s Law</h1>
+<div class="info">26 April 2021<span class="sep">·</span>Sabiqul Hoque</div>
 <section><p>
 This is the idea that <i>work expands to fill the time you allocate to it</i>.
 </p>
 </section>
-<div id="outline-container-org406f81e" class="outline-2">
-<h2 id="org406f81e">Follow On Thoughts</h2>
-</div>
-<div id="outline-container-org40f0c19" class="outline-2">
-<h2 id="org40f0c19">Connected Ideas (Similar/Opposing Ideas)</h2>
-</div>
+
+
 </article>
-<div style="margin-right:-15%; width:50%; float:right;">
-       <a href="#top"  title="Go to Top" style="visibility: visible; opacity: 0.5;">
-      <svg xmlns="http://www.w3.org/2000/svg" height="15" width="30" viewBox="0 0 12 6" fill="#f57627" stroke="none">
-      <path d="M12 6H0l6-6z"></path></svg> </a></div>
-<footer class="footer"  style="margin-top: 4em;">
-      <span>Powered by Emacs Org Mode</span>
-     </footer>
-     </div></div></div></body></html>
+<footer class="footer">
+<span>Notes by <a class="site-author" href="../index.html">Sabiqul Hoque</a></span>
+<span>Written in Org&nbsp;mode</span>
+<a class="goto-top" href="#top" title="Back to top">↑ Top</a>
+</footer>
+</div></div></div>
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.querySelector('[data-theme-toggle]');
+  if (!btn) return;
+  function current() {
+    return root.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }
+  function label() {
+    btn.textContent = current() === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', 'Switch to ' + (current() === 'dark' ? 'light' : 'dark') + ' theme');
+  }
+  label();
+  btn.addEventListener('click', function () {
+    var next = current() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('bd-theme', next); } catch (e) {}
+    label();
+  });
+})();
+</script>
+</body></html>
