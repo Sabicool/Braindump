@@ -15,12 +15,13 @@
 <link rel="stylesheet" href="css/tufte.css">
 <link rel="stylesheet" href="css/htmlize.css">
 <link rel="stylesheet" href="css/org.css">
-<link rel="stylesheet" href="css/custom.css">
-<link rel="alternate" type="application/atom+xml" title="Braindump" href="feed.xml">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" integrity="sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
-    onload="renderMathInElement(document.body);"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/mhchem.min.js" integrity="sha384-RTN08a0AXIioPBcVosEqPUfKK+rPp+h1x/izR7xMkdMyuwkcZCWdxO+RSwIFtJXN" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body,{throwOnError:false,errorColor:'#9a3b1b'});"></script>
+<link rel="stylesheet" href="css/custom.css">
+<link rel="alternate" type="application/atom+xml" title="Braindump" href="feed.xml">
+
 <script>(function(){try{var t=localStorage.getItem('bd-theme');if(t){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
 <script>(function(){try{var k='bd-scroll:'+location.pathname;var y=sessionStorage.getItem(k);if(y!==null&&!location.hash){history.scrollRestoration='manual';y=+y;var t0=Date.now(),stop=false;['wheel','touchstart','pointerdown','keydown'].forEach(function(e){addEventListener(e,function(){stop=true},{passive:true,once:true})});(function go(){if(stop)return;scrollTo(0,y);if(Math.abs(scrollY-y)>2&&Date.now()-t0<3000)requestAnimationFrame(go)})()}addEventListener('scroll',function(){try{sessionStorage.setItem(k,scrollY)}catch(e){}},{passive:true})}catch(e){}})();</script>
 <script src="js/site.js" defer></script>
