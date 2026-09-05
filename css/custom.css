@@ -189,6 +189,19 @@ section > ol a:hover,
     text-decoration-color: var(--accent);
 }
 
+/* Links out to the blog, resolved by the exporter from Blog.org's
+   :EXPORT_FILE_NAME:.  The blog's own favicon marks them as leaving the
+   site; it is vendored locally so the page makes no third-party request. */
+a.blog-link::after {
+    content: "";
+    display: inline-block;
+    width: 0.78em;
+    height: 0.78em;
+    margin-left: 0.3em;
+    vertical-align: -0.07em;
+    background: url("img/blog-favicon.png") no-repeat center / contain;
+}
+
 /* Links whose target is not published. Emitted by the exporter in place of
    an <a> so the reader never lands on a 404. */
 .private-link {
