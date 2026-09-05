@@ -88,10 +88,6 @@ html {
 body {
     background-color: var(--bg);
     color: var(--ink);
-    /* Tufte reserves a fat left gutter it never uses; the margin notes hang
-       off the right. Pull the column back toward centre on wide screens. */
-    max-width: 1180px;
-    padding-left: 10%;
     font-family: et-book, "et-book-fallback", Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
     text-wrap: pretty;
     hyphens: manual;
@@ -417,9 +413,9 @@ abbr.small-caps {
 /* Illuminated dropcap on the opening paragraph of a note.
 
    Two layers from two fonts, after turntrout.com: the ornament (EB Garamond
-   Initials, the "F1" cut) is drawn by ::before from data-first-letter, and
-   the plain letter (the "F2" cut) by ::first-letter floated over it.  Both
-   fonts are OFL; the letter-only subsets are the ones turntrout.com serves. */
+   Initials, the "F1" cut) is drawn by ::before from data-letter, and the
+   plain letter (the "F2" cut) by the span itself.  Both fonts are OFL; the
+   letter-only subsets are the ones turntrout.com serves. */
 @font-face {
     font-family: "EBGaramondInitialsF1";
     src: url("fonts/EBGaramondInitialsF1.woff2") format("woff2");
@@ -435,38 +431,37 @@ abbr.small-caps {
 
 article.note {
     --dropcap-size: 6rem;        /* spans three lines of body copy */
-    --dropcap-offset: 0.1rem;
-    --dropcap-ornament: var(--accent-soft);
+    /* Grey by default; site.js sets a colour on a 7% roll. */
+    --dropcap-ornament: var(--rule-strong);
 }
 
-p.dropcap {
+/* The exporter wraps the opening letter:
+   <span class="dropcap" data-letter="M">M</span>
+   The span is the plain letter (F2); its ::before draws the ornament (F1)
+   from data-letter in the same box.  Both cuts come from one font, so their
+   vertical metrics match and the two glyphs register exactly. */
+.dropcap {
     position: relative;
-    min-height: calc(var(--dropcap-size) + 0.3rem);
-}
-p.dropcap::before {
-    content: attr(data-first-letter);
     float: left;
-    width: var(--dropcap-size);
-    padding-top: var(--dropcap-offset);
-    padding-right: 0.1em;
-    font-family: "EBGaramondInitialsF1", et-book, serif;
-    font-size: var(--dropcap-size);
-    line-height: 1;
-    text-transform: uppercase;
-    color: var(--dropcap-ornament);
-}
-p.dropcap::first-letter {
-    float: left;
-    margin-left: calc(-1 * var(--dropcap-size) - 0.1em);
-    padding-top: var(--dropcap-offset);
-    padding-right: 0.1em;
+    display: block;
+    width: 1em;
+    height: 1em;
+    margin: 0.06em 0.12em 0 0;
     font-family: "EBGaramondInitialsF2", et-book, serif;
     font-size: var(--dropcap-size);
-    font-style: normal !important;
+    font-style: normal;
     font-weight: 400;
     line-height: 1;
     text-transform: uppercase;
     color: var(--ink);
+}
+.dropcap::before {
+    content: attr(data-letter);
+    position: absolute;
+    inset: 0;
+    font-family: "EBGaramondInitialsF1", et-book, serif;
+    color: var(--dropcap-ornament);
+    pointer-events: none;
 }
 
 /* Rule tailpiece: a small ornament between two rules that fade outward.
@@ -1059,8 +1054,93 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
    14. Narrow screens
    -------------------------------------------------------------------------- */
 
+/* Wide screens.  tufte.css and org.css each add a one-sided left gutter
+   (body padding-left 12.5%, #container padding-left 12.5%) and let the
+   sidenotes hang into whatever is left, which overflows the viewport
+   anywhere below about 1300px.  Instead, centre one shell wide enough for
+   the text column and the sidenote gutter together, and let that shell own
+   the horizontal space. */
+@media (min-width: 1100px) {
+    body {
+        width: min(100% - 5rem, 1120px);
+        max-width: none;
+        padding-left: 0;
+        padding-right: 0;
+        margin-inline: auto;
+    }
+    div#container {
+        width: 100%;
+        max-width: none;
+        padding-left: 0;
+        -webkit-padding-start: 0;
+    }
+}
+
+/* Tablet / small laptop.  tufte.css only collapses its margin-note layout
+   below 760px, but the 55% text column plus a sidenote hanging into
+   margin-right:-60% needs roughly 1100px before it fits.  Between the two
+   the page overflows sideways and the column sits well right of centre.
+   Give that range the same single-column treatment as narrow screens. */
+@media (min-width: 761px) and (max-width: 1099px) {
+    body { width: 86%; padding-left: 7%; padding-right: 7%; }
+    div#body { width: 100%; padding-left: 0; padding-right: 0; }
+    div#container { width: 100%; padding-left: 0; -webkit-padding-start: 0; }
+
+    :root { --measure: 100%; }
+
+    hr,
+    section > p,
+    section > p + span,
+    section > footer,
+    section > table,
+    blockquote p,
+    blockquote footer { width: 100%; }
+
+    section > dl,
+    section > ol,
+    section > ul { width: 100%; -webkit-padding-start: 0; }
+
+    figure { max-width: 100%; }
+    figcaption,
+    figure.fullwidth figcaption { margin-right: 0; max-width: none; }
+    blockquote { margin-left: 0; margin-right: 0; }
+    pre > code, pre.example { width: 100%; }
+
+    /* Sidenotes become inline notes behind their number, as below 760px. */
+    label.margin-toggle:not(.sidenote-number) { display: inline; }
+    label { cursor: pointer; }
+    .sidenote, .marginnote { display: none; }
+    .margin-toggle:checked + .sidenote,
+    .margin-toggle:checked + .marginnote {
+        display: block;
+        float: left;
+        left: 1rem;
+        clear: both;
+        width: 95%;
+        margin: 1rem 2.5%;
+        position: relative;
+    }
+
+    h2 .anchor, h3 .anchor { position: static; margin-left: 0.4em; }
+}
+
 @media (max-width: 760px) {
     body { padding-left: 7%; padding-right: 7%; width: 86%; }
+
+    /* org.css gives the wrapper divs their own one-sided gutters
+       (#container padding-left 12.5%, #body padding-right 8%), which it
+       never balances on narrow screens -- the text ends up pushed right.
+       Let `body' be the only thing that insets the column. */
+    div#body {
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    div#container {
+        width: 100%;
+        padding-left: 0;
+        -webkit-padding-start: 0;
+    }
 
     h1.title { font-size: 2.2rem; max-width: 100%; }
     h2 { font-size: 1.7rem; }
