@@ -860,9 +860,14 @@ section > table {
 }
 
 /* A long unbroken string (a URL, say) would otherwise widen the table past
-   the column no matter what width is set. */
+   the column.  `break-word' breaks only when a word genuinely cannot fit;
+   `anywhere' also shrinks the column's min-content width, which crushed
+   narrow columns -- "link" wrapping to "lin/k". */
 section > table td,
-section > table th { overflow-wrap: anywhere; }
+section > table th { overflow-wrap: break-word; }
+/* Marker columns hold one short word; let them size to it. */
+section > table td:first-child,
+section > table th:first-child { white-space: nowrap; width: 1%; }
 
 section > table thead { border-bottom: 1px solid var(--rule-strong); }
 section > table tr { border-top: 1px solid var(--rule); }
