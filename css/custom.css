@@ -29,6 +29,14 @@
     --link-underline: #c3bfae;
 
     --measure:       55%;       /* Tufte's text column */
+    /* Body line height as a length, so the dropcap can be sized against an
+       exact number of lines.  1.4rem copy (tufte.css) x 1.62. */
+    --body-line:     2.268rem;
+    /* Measured for ET Book at 1.4rem: cap height, and the distance from a
+       line box's top down to the cap top.  The dropcap uses these to sit on
+       the text rather than on the line boxes. */
+    --body-cap:      0.9422rem;
+    --body-cap-top:  0.6253rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -337,7 +345,7 @@ h2 a:hover, h3 a:hover, h4 a:hover {
    7. Body copy
    -------------------------------------------------------------------------- */
 
-section > p { line-height: 1.62; }
+section > p { line-height: var(--body-line); }
 
 section > ul,
 section > ol {
@@ -430,9 +438,13 @@ abbr.small-caps {
 }
 
 article.note {
-    --dropcap-size: 6rem;        /* spans three lines of body copy */
-    /* Grey by default; site.js sets a colour on a 7% roll. */
-    --dropcap-ornament: var(--rule-strong);
+    /* How many lines of copy the dropcap stands beside.  Its ink is fitted
+       to those lines exactly: the top of the ornament meets the cap height
+       of the first line, and its foot sits on the baseline of the last.
+       Sizing it to whole line *boxes* instead leaves the ornament
+       overshooting the text at both ends, which reads as an extra line. */
+    --dropcap-lines: 3;
+    --dropcap-ornament: var(--rule-strong);   /* site.js colours it on a 7% roll */
 }
 
 /* The exporter wraps the opening letter:
@@ -445,16 +457,26 @@ article.note {
     float: left;
     display: block;
     width: 1em;
-    height: 1em;
-    margin: 0.06em 0.12em 0 0;
+    margin: calc(var(--body-cap-top) - 0.005em) 0.14em 0 0;
     font-family: "EBGaramondInitialsF2", et-book, serif;
-    font-size: var(--dropcap-size);
+    /* Ink spans (lines - 1) baselines plus one cap height; the ornament's
+       own ink is 99% of its em box, hence the divisor. */
+    font-size: calc((((var(--dropcap-lines) - 1) * var(--body-line)) + var(--body-cap)) / 0.99);
+    height: 1em;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
     text-transform: uppercase;
     color: var(--ink);
 }
+/* The first few words alongside the dropcap, set in small caps.  The
+   letters stay lower case in the markup, so copied text is unchanged. */
+.opening {
+    font-variant-caps: small-caps;
+    font-feature-settings: "smcp";
+    letter-spacing: 0.045em;
+}
+
 .dropcap::before {
     content: attr(data-letter);
     position: absolute;
@@ -1164,7 +1186,7 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
     .csl-bib-body { width: 100%; }
     .anki-card, .cite-this, pre.code, .tailpiece { width: 100%; }
     h2 .anchor, h3 .anchor { position: static; margin-left: 0.4em; }
-    article.note { --dropcap-size: 4.4rem; }
+    /* Three lines here too; two looked undersized against the title. */
 
     .site-header { gap: 1rem; font-size: 0.95rem; }
     .site-header .site-title { font-size: 1.2rem; }
