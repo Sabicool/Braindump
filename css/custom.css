@@ -469,6 +469,12 @@ article.note {
     text-transform: uppercase;
     color: var(--ink);
 }
+/* A first paragraph shorter than the dropcap leaves the float sticking out
+   below it, and the next list or paragraph wraps around it -- indented for
+   a line or two with nothing beside it.  Everything after the dropcap's own
+   paragraph starts below the ornament instead. */
+p.dropcap-para ~ * { clear: left; }
+
 /* The first few words alongside the dropcap, set in small caps.  The
    letters stay lower case in the markup, so copied text is unchanged. */
 .opening {
@@ -486,26 +492,16 @@ article.note {
     pointer-events: none;
 }
 
-/* Rule tailpiece: a small ornament between two rules that fade outward.
-   The element is emitted by the exporter (my/braindump-tailpiece). */
+/* Tailpiece.  The ornament and its rules are one SVG emitted by the
+   exporter, so all this does is size and colour it. */
 .tailpiece {
-    display: flex;
-    align-items: center;
-    gap: 1.1rem;
     width: var(--measure);
     max-width: 100%;
     margin: 3.2rem 0 0.5rem;
     color: var(--rule-strong);
 }
-.tailpiece::before,
-.tailpiece::after {
-    content: "";
-    flex: 1 1 auto;
-    height: 1px;
-}
-.tailpiece::before { background: linear-gradient(to right, transparent, var(--rule-strong)); }
-.tailpiece::after  { background: linear-gradient(to left,  transparent, var(--rule-strong)); }
-.tailpiece svg { flex: 0 0 auto; display: block; }
+
+.tailpiece svg { display: block; width: 100%; height: auto; }
 
 /* Cite-this block */
 .cite-this {
@@ -1148,19 +1144,27 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
 }
 
 .note-index > li {
-    display: flex;
-    flex-wrap: wrap;
+    /* Two columns rather than a wrapping flex row: the date keeps its own
+       column at the right whatever the title's length.  With flex-wrap a
+       long title pushed the date onto the next line, so some rows had the
+       date to the right and others underneath. */
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 1rem;
     align-items: baseline;
-    gap: 0 1rem;
     padding: 0.6rem 0;
     margin-top: 0;
     border-bottom: 1px solid var(--rule);
 }
 
+.note-index > li > a { grid-column: 1; }
+.note-index > li > time { grid-column: 2; }
+.note-index > li > .note-summary { grid-column: 1 / -1; }
+
 .note-index > li::before { content: none; }
 .note-index > li:last-child { border-bottom: 0; }
 
-.note-index > li > a { flex: 1 1 auto; }
+
 
 .note-index time {
     flex: 0 0 auto;
@@ -1321,12 +1325,9 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
     .site-header { gap: 1rem; font-size: 0.95rem; }
     .site-header .site-title { font-size: 1.2rem; }
 
-    /* Stack the date under the title rather than squeezing the column. */
-    .note-index > li {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.15rem;
-    }
+    /* Date stays in its own column here too, so every row reads the same
+       way at every width. */
+    .note-index > li { column-gap: 0.7rem; }
 }
 
 /* --------------------------------------------------------------------------
