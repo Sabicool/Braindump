@@ -28,6 +28,11 @@
     /* Link underlines sit lighter than the text they belong to */
     --link-underline: #c3bfae;
 
+    /* Maturity marks */
+    --seedling:      #7d9a5b;
+    --budding:       #c08a3e;
+    --evergreen:     #3b6e8f;
+
     --measure:       55%;       /* Tufte's text column */
     /* Body line height as a length, so the dropcap can be sized against an
        exact number of lines.  1.4rem copy (tufte.css) x 1.62. */
@@ -54,6 +59,10 @@
         --selection:     #453a26;
 
         --link-underline: #565146;
+
+        --seedling:      #9dbd7a;
+        --budding:       #d9ab63;
+        --evergreen:     #7fb0d0;
     }
 }
 
@@ -71,6 +80,10 @@
     --selection:     #453a26;
 
     --link-underline: #565146;
+
+    --seedling:      #9dbd7a;
+    --budding:       #d9ab63;
+    --evergreen:     #7fb0d0;
 }
 
 /* --------------------------------------------------------------------------
@@ -296,6 +309,170 @@ h1.title {
 
 .info .sep { margin: 0 0.5em; color: var(--rule-strong); }
 
+/* Maturity mark in the meta line.  The dot carries the colour, the word
+   carries the meaning; the key on the home page explains both. */
+.info .maturity { white-space: nowrap; }
+.info .maturity .m-dot { margin-right: 0.45em; vertical-align: 0.04em; }
+
+/* --------------------------------------------------------------------------
+   5b. The home page
+
+   The front door should not read like note number twenty-seven, so the
+   title becomes a masthead and the page carries a few things no note has:
+   the garden's own numbers, a key to the maturity marks, and the newest
+   notes.  Everything here is generated at publish time except the wording,
+   which lives in index.org.
+   -------------------------------------------------------------------------- */
+
+.masthead {
+    width: var(--measure);
+    max-width: 100%;
+    margin: 2.6rem 0 0;
+}
+
+.masthead h1.title {
+    font-size: 3.4rem;
+    line-height: 1.02;
+    margin: 0 0 0.3rem;
+    letter-spacing: -0.012em;
+    max-width: 100%;
+}
+
+.masthead .standfirst {
+    width: 100%;
+    font-size: 1.55rem;
+    line-height: 1.45;
+    color: var(--ink-muted);
+    margin: 0.4rem 0 1.1rem;
+}
+
+.masthead-rule {
+    height: 1px;
+    background: var(--rule-strong);
+    margin: 0 0 0.2rem;
+}
+
+/* Maturity marks, shared by the key, the stats line and the recent list. */
+.m-dot {
+    display: inline-block;
+    width: 0.55em;
+    height: 0.55em;
+    border-radius: 50%;
+    margin-right: 0.42em;
+    vertical-align: 0.02em;
+    background: var(--rule-strong);
+}
+.m-seedling  { background: var(--seedling); }
+.m-budding   { background: var(--budding); }
+.m-evergreen { background: var(--evergreen); }
+
+.garden-stats {
+    font-size: 0.85rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0.7rem 0 0;
+    display: flex;
+    gap: 1.1rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+
+/* Maturity key: a plain org list, given its colour by position, so the
+   list in index.org stays readable prose. */
+ul.maturity-key {
+    width: var(--measure);
+    max-width: 100%;
+    list-style: none;
+    padding-left: 0;
+    -webkit-padding-start: 0;
+    margin: 1.4rem 0;
+}
+ul.maturity-key > li {
+    padding-left: 1.3em;
+    position: relative;
+    font-size: 1.15rem;
+}
+ul.maturity-key > li::before {
+    content: "";
+    position: absolute;
+    left: 0.1em;
+    top: 0.62em;
+    width: 0.55em;
+    height: 0.55em;
+    border-radius: 50%;
+    background: var(--rule-strong);
+}
+ul.maturity-key > li:nth-child(1)::before { background: var(--seedling); }
+ul.maturity-key > li:nth-child(2)::before { background: var(--budding); }
+ul.maturity-key > li:nth-child(3)::before { background: var(--evergreen); }
+
+/* Where to start: a description list, term as the link, definition as the
+   one line that says why you would click it. */
+dl.start {
+    width: var(--measure);
+    max-width: 100%;
+    margin: 1.2rem 0 0;
+    /* tufte.css indents description lists by 5%; these are rows, not an
+       indented definition block. */
+    padding-left: 0;
+    -webkit-padding-start: 0;
+}
+dl.start > dt {
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--rule);
+    font-size: 1.35rem;
+}
+dl.start > dt:first-child { border-top: 0; padding-top: 0; }
+dl.start > dd {
+    margin: 0.15rem 0 0.85rem;
+    font-size: 1.1rem;
+    line-height: 1.45;
+    color: var(--ink-muted);
+}
+
+/* Recently planted */
+ul.recent {
+    width: var(--measure);
+    max-width: 100%;
+    list-style: none;
+    padding-left: 0;
+    -webkit-padding-start: 0;
+    margin: 0.8rem 0 0;
+}
+ul.recent > li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.7rem;
+    align-items: baseline;
+    padding: 0.45rem 0;
+    margin-top: 0;
+    border-bottom: 1px solid var(--rule);
+}
+ul.recent > li::before { content: none; }
+ul.recent > li:last-child { border-bottom: 0; }
+ul.recent time {
+    font-size: 0.85rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    white-space: nowrap;
+}
+
+/* Section labels on the home page.  index.org marks these headings with
+   :HTML_CONTAINER_CLASS: home-section, so they read as quiet labels rather
+   than as the italic headings a note uses. */
+.home-section > h2,
+article.note h2.section,
+.section-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    font-style: normal;
+    color: var(--ink-faint);
+    margin: 2.6rem 0 0.2rem;
+}
+
 /* --------------------------------------------------------------------------
    6. Headings and outline rhythm
 
@@ -343,6 +520,9 @@ h4 {
 .outline-2 > h2 {
     padding-top: 0.5rem;
 }
+
+.home-section > h2 { padding-top: 0; }
+.home-section > section > p:first-child { margin-top: 0.6rem; }
 
 /* Headings that are themselves links (backlink sources, MoC lists) */
 h2 a:link, h3 a:link, h4 a:link,
@@ -1342,7 +1522,10 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
     section > .csl-bib-body,
     .csl-bib-body { width: 100%; }
     .anki-card, .cite-this, pre.code, .tailpiece,
-    .org-center, section > dl { width: 100%; }
+    .org-center, section > dl,
+    .masthead, ul.maturity-key, dl.start, ul.recent { width: 100%; }
+    .masthead h1.title { font-size: 2.4rem; }
+    .masthead .standfirst { font-size: 1.3rem; }
     h2 .anchor, h3 .anchor { position: static; margin-left: 0.4em; }
     /* Three lines here too; two looked undersized against the title. */
 
