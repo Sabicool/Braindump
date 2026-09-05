@@ -498,10 +498,21 @@ p.dropcap-para ~ * { clear: left; }
     width: var(--measure);
     max-width: 100%;
     margin: 3.2rem 0 0.5rem;
+    text-align: center;
     color: var(--rule-strong);
 }
 
-.tailpiece svg { display: block; width: 100%; height: auto; }
+/* Fixed height, width from the aspect ratio.  `width: 100%' stretched the
+   old 64x14 ornament across the whole column -- a twelvefold blow up --
+   whenever the stylesheet was newer than the published pages.  Sizing on
+   height instead means any ornament, of any age or proportion, renders at
+   a sane size. */
+.tailpiece svg {
+    display: inline-block;
+    height: 2.6rem;
+    width: auto;
+    max-width: 100%;
+}
 
 /* Cite-this block */
 .cite-this {
