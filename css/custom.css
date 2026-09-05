@@ -615,6 +615,115 @@ article.note {
 .is-revealed .cloze::after { content: none; }
 
 /* --------------------------------------------------------------------------
+   7d. Elements org emits that the upstream sheets never styled
+   -------------------------------------------------------------------------- */
+
+/* Display maths.  KaTeX lays out its own box; hold it to the text column
+   and let a wide equation scroll rather than widening the page. */
+.katex-display {
+    /* Full width of its paragraph, which already carries the measure --
+       var(--measure) here would take 55% of 55%. */
+    width: 100%;
+    max-width: 100%;
+    /* equation/align environments are emitted as a bare span in the
+       section rather than inside a <p>, so they would otherwise inherit
+       the 15px root size and render visibly smaller than \[ \] blocks.
+       Pin every display block to body copy size. */
+    font-size: 1.4rem;
+    margin: 1.6rem 0;
+    padding: 0.2rem 0;
+    /* Wide equations scroll rather than widening the page.  The tagged
+       environments otherwise paint an always-visible scrollbar track even
+       when there is nothing to scroll, so hide the bar and keep the
+       scrolling -- the treatment org.css already gives code blocks. */
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+/* KaTeX puts overflow-x:auto on .katex-html too, and a tagged equation
+   overshoots it by a pixel or two, so the browser paints a scrollbar
+   track across the block.  Keep the scrolling, drop the bar. */
+.katex-display,
+.katex-display .katex-html { scrollbar-width: none; }
+.katex-display::-webkit-scrollbar,
+.katex-display .katex-html::-webkit-scrollbar { display: none; }
+
+/* KaTeX ships a 1.21em default, tuned for Computer Modern's small
+   x-height.  Against ET Book that reads oversized inline, so match the
+   surrounding copy and let only display maths sit slightly larger. */
+.katex { font-size: 1em; }
+.katex-display > .katex { font-size: 1.1em; }
+.katex-error { color: var(--accent); font-family: Consolas, Menlo, monospace; font-size: 0.85em; }
+
+/* #+begin_center */
+.org-center {
+    width: var(--measure);
+    max-width: 100%;
+    text-align: center;
+}
+.org-center > p { width: 100%; }
+
+/* Description lists (term :: definition).  Left at the browser default --
+   term in body type on its own line, definition indented under it. */
+section > dl { width: var(--measure); max-width: 100%; }
+
+/* Checkbox items.  org emits a literal <code>[ ]</code> / <code>[X]</code>;
+   hide it and draw a real box, so a task list reads as one. */
+section > ul > li.on > code:first-child,
+section > ul > li.off > code:first-child { display: none; }
+
+section > ul > li.on,
+section > ul > li.off {
+    position: relative;
+    padding-left: 1.6em;
+    list-style: none;
+}
+
+section > ul > li.on::before,
+section > ul > li.off::before {
+    content: "";
+    position: absolute;
+    left: 0.1em;
+    top: 0.62em;
+    width: 0.7em;
+    height: 0.7em;
+    box-sizing: border-box;
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    background: none;
+}
+
+section > ul > li.on::before {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* The tick, drawn as two borders rotated into a check. */
+section > ul > li.on::after {
+    content: "";
+    position: absolute;
+    left: 0.26em;
+    top: 0.78em;
+    width: 0.3em;
+    height: 0.15em;
+    border-left: 1.5px solid var(--bg);
+    border-bottom: 1.5px solid var(--bg);
+    transform: rotate(-45deg);
+}
+
+section > ul > li.on { color: var(--ink-faint); }
+
+/* Ordered lists: tufte zeroes the padding, which leaves the numbers
+   outside the box and invisible. */
+section > ol {
+    padding-left: 1.6em;
+    -webkit-padding-start: 1.6em;
+}
+section > ol > li { padding-left: 0.2em; }
+section > ol > li::marker { color: var(--ink-muted); }
+
+/* --------------------------------------------------------------------------
    8. Sidenotes
    -------------------------------------------------------------------------- */
 
@@ -738,15 +847,22 @@ section > .csl-bib-body,
    -------------------------------------------------------------------------- */
 
 section > table {
-    display: block;
-    overflow-x: auto;
+    /* Always spans the text column, so the row rules run the full measure
+       and columns take their share of it.  Sizing to max-content instead
+       makes short tables shrink into a cramped box. */
+    width: var(--measure);
     max-width: var(--measure);
-    width: max-content;
+    table-layout: auto;
     font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
     font-size: 1.05rem;
     text-align: left;
     border-collapse: collapse;
 }
+
+/* A long unbroken string (a URL, say) would otherwise widen the table past
+   the column no matter what width is set. */
+section > table td,
+section > table th { overflow-wrap: anywhere; }
 
 section > table thead { border-bottom: 1px solid var(--rule-strong); }
 section > table tr { border-top: 1px solid var(--rule); }
@@ -1116,11 +1232,15 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
     section > footer,
     section > table,
     blockquote p,
-    blockquote footer { width: 100%; }
+    blockquote footer,
+    .org-center,
+    section > dl { width: 100%; }
 
+    /* Width only -- zeroing the padding here would take the numbers off
+       the ordered lists. */
     section > dl,
     section > ol,
-    section > ul { width: 100%; -webkit-padding-start: 0; }
+    section > ul { width: 100%; }
 
     figure { max-width: 100%; }
     figcaption,
@@ -1148,6 +1268,10 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
 
 @media (max-width: 760px) {
     body { padding-left: 7%; padding-right: 7%; width: 86%; }
+
+    /* One column here, so the measure is the whole column.  Everything
+       sized against it -- tables, cards, the index, the rules -- follows. */
+    :root { --measure: 100%; }
 
     /* org.css gives the wrapper divs their own one-sided gutters
        (#container padding-left 12.5%, #body padding-right 8%), which it
@@ -1184,7 +1308,8 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
     section > table { max-width: 100%; }
     section > .csl-bib-body,
     .csl-bib-body { width: 100%; }
-    .anki-card, .cite-this, pre.code, .tailpiece { width: 100%; }
+    .anki-card, .cite-this, pre.code, .tailpiece,
+    .org-center, section > dl { width: 100%; }
     h2 .anchor, h3 .anchor { position: static; margin-left: 0.4em; }
     /* Three lines here too; two looked undersized against the title. */
 
