@@ -608,9 +608,10 @@ h4 {
    the column.  So reserve a strip and pull the box left by the same amount,
    which leaves the text column exactly where it was.
 
-   The backlinks block is `.outline-2.references'.  It is machinery rather
-   than part of the note, so it is skipped -- and skipped by the counter too,
-   not just left unlabelled. */
+   Two kinds of section are skipped, by the counter as well as the label:
+   `.references' (the backlinks block, machinery rather than part of the
+   note) and `.home-section' (the front page, which is a doorway rather than
+   an argument -- numbering "Where to start" says nothing). */
 :root { --marker-gutter: 2.9rem; }
 
 div#body {
@@ -619,14 +620,14 @@ div#body {
 }
 
 article.note { counter-reset: h2sec; }
-article.note .outline-2:not(.references) { counter-increment: h2sec; counter-reset: h3sec; }
-article.note .outline-2:not(.references) .outline-3 { counter-increment: h3sec; }
+article.note .outline-2:not(.references):not(.home-section) { counter-increment: h2sec; counter-reset: h3sec; }
+article.note .outline-2:not(.references):not(.home-section) .outline-3 { counter-increment: h3sec; }
 
-article.note .outline-2:not(.references) > h2,
-article.note .outline-2:not(.references) .outline-3 > h3 { position: relative; }
+article.note .outline-2:not(.references):not(.home-section) > h2,
+article.note .outline-2:not(.references):not(.home-section) .outline-3 > h3 { position: relative; }
 
-article.note .outline-2:not(.references) > h2::before,
-article.note .outline-2:not(.references) .outline-3 > h3::before {
+article.note .outline-2:not(.references):not(.home-section) > h2::before,
+article.note .outline-2:not(.references):not(.home-section) .outline-3 > h3::before {
     position: absolute;
     right: 100%;              /* right edge meets the text edge... */
     margin-right: 0.35em;     /* ...less a hair of air */
@@ -645,10 +646,10 @@ article.note .outline-2:not(.references) .outline-3 > h3::before {
     white-space: nowrap;
     color: var(--ink-faint);
 }
-article.note .outline-2:not(.references) > h2::before {
+article.note .outline-2:not(.references):not(.home-section) > h2::before {
     content: counter(h2sec);
 }
-article.note .outline-2:not(.references) .outline-3 > h3::before {
+article.note .outline-2:not(.references):not(.home-section) .outline-3 > h3::before {
     content: counter(h2sec) "." counter(h3sec);
 }
 
@@ -659,8 +660,8 @@ article.note .outline-2:not(.references) .outline-3 > h3::before {
 @media (max-width: 699px) {
     :root { --marker-gutter: 0rem; }
 
-    article.note .outline-2:not(.references) > h2::before,
-    article.note .outline-2:not(.references) .outline-3 > h3::before {
+    article.note .outline-2:not(.references):not(.home-section) > h2::before,
+    article.note .outline-2:not(.references):not(.home-section) .outline-3 > h3::before {
         position: static;
         padding-top: 0;
         margin-right: 0.4em;
