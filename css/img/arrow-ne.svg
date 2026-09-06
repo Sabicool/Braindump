@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- North-east arrow, for use as a CSS mask. -->
+  <g fill="none" stroke="#000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 18 L18 6"/>
+    <path d="M9.5 6 L18 6 L18 14.5"/>
+  </g>
+</svg>

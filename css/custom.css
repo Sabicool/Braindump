@@ -202,18 +202,85 @@ section > ol a:hover,
     text-decoration-color: var(--accent);
 }
 
-/* Links out to the blog, resolved by the exporter from Blog.org's
-   :EXPORT_FILE_NAME:.  The blog's own favicon marks them as leaving the
-   site; it is vendored locally so the page makes no third-party request. */
-a.blog-link::after {
+/* Where a link goes, marked by a small glyph after it.  The exporter
+   classifies every link in the body; the chrome carries its own classes
+   and is never touched.
+
+   The two site favicons are real images, vendored locally so no page makes
+   a third-party request.  The moth and the arrow are masks instead, so they
+   take their colour from the text and follow the theme. */
+a.blog-link::after,
+a.med-link::after,
+a.external-link::after,
+a.internal-link::after {
     content: "";
     display: inline-block;
-    width: 0.78em;
-    height: 0.78em;
-    margin-left: 0.3em;
-    vertical-align: -0.07em;
-    background: url("img/blog-favicon.png") no-repeat center / contain;
+    margin-left: 0.28em;
+    vertical-align: -0.05em;
 }
+
+a.blog-link::after,
+a.med-link::after {
+    width: 0.76em;
+    height: 0.76em;
+    vertical-align: -0.07em;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+a.blog-link::after { background-image: url("img/blog-favicon.png"); }
+/* The medical notes' icon is a filled tile rather than a transparent glyph,
+   so it is rounded and held back a little to sit at the weight of the star. */
+a.med-link::after  {
+    background-image: url("img/med-favicon.png");
+    border-radius: 2px;
+    opacity: 0.88;
+}
+a.med-link:hover::after { opacity: 1; }
+
+/* Masked marks: alpha from the file, colour from the link. */
+a.external-link::after,
+a.internal-link::after {
+    background-color: currentColor;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    opacity: 0.55;
+}
+a.external-link:hover::after,
+a.internal-link:hover::after { opacity: 1; }
+
+a.external-link::after {
+    width: 0.6em;
+    height: 0.6em;
+    vertical-align: 0.06em;
+    -webkit-mask-image: url("img/arrow-ne.svg");
+    mask-image: url("img/arrow-ne.svg");
+}
+
+/* The moth is the commonest mark on the site, so it is set small and
+   faint: at a glance it should read as texture, not as punctuation. */
+a.internal-link::after {
+    width: 0.66em;
+    height: 0.54em;
+    -webkit-mask-image: url("img/moth-mark.svg");
+    mask-image: url("img/moth-mark.svg");
+    opacity: 0.4;
+}
+
+/* The site's own furniture — the index, the home page's lists, the
+   bibliography — is already nothing but internal links, so a mark on each
+   row would stack into a column of noise saying nothing. Prose keeps it. */
+.note-index a::after,
+ul.recent a::after,
+dl.start a::after,
+.references a::after,
+.site-header a::after,
+.footer a::after,
+.popover a::after { content: none; }
 
 /* Links whose target is not published. Emitted by the exporter in place of
    an <a> so the reader never lands on a 404. */
