@@ -594,6 +594,79 @@ h4 {
     line-height: 1.25;
 }
 
+/* Section numbers, hung in the left margin.
+
+   Headings are set the same at every level -- only size separates them, and
+   at h3 that is barely two pixels over body copy.  The number says the depth
+   instead, so the type does not have to.  Set at the heading's own size so
+   the digits stand at its height, and right-aligned against the text edge so
+   1 and 1.1 both finish in the same place.
+
+   The gutter has to be built before anything can hang in it: org.css puts
+   `overflow-y: auto' on div#body, which makes overflow-x compute to `auto'
+   as well, and at no width is there any room inside that box to the left of
+   the column.  So reserve a strip and pull the box left by the same amount,
+   which leaves the text column exactly where it was.
+
+   The backlinks block is `.outline-2.references'.  It is machinery rather
+   than part of the note, so it is skipped -- and skipped by the counter too,
+   not just left unlabelled. */
+:root { --marker-gutter: 2.9rem; }
+
+div#body {
+    padding-left: var(--marker-gutter);
+    margin-left: calc(-1 * var(--marker-gutter));
+}
+
+article.note { counter-reset: h2sec; }
+article.note .outline-2:not(.references) { counter-increment: h2sec; counter-reset: h3sec; }
+article.note .outline-2:not(.references) .outline-3 { counter-increment: h3sec; }
+
+article.note .outline-2:not(.references) > h2,
+article.note .outline-2:not(.references) .outline-3 > h3 { position: relative; }
+
+article.note .outline-2:not(.references) > h2::before,
+article.note .outline-2:not(.references) .outline-3 > h3::before {
+    position: absolute;
+    right: 100%;              /* right edge meets the text edge... */
+    margin-right: 0.35em;     /* ...less a hair of air */
+    top: 0;
+    /* `.outline-2 > h2' carries padding-top, and an absolutely positioned
+       child is placed against the padding box -- so `top: 0' put the digits
+       that far above the heading's own first line.  Taking the same padding
+       drops them back onto its baseline, whatever that padding becomes. */
+    padding-top: inherit;
+    /* Inheriting both means the digits share the heading's baseline. */
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    font-style: normal;       /* lining figures upright against italic text */
+    font-variant-numeric: lining-nums;
+    white-space: nowrap;
+    color: var(--ink-faint);
+}
+article.note .outline-2:not(.references) > h2::before {
+    content: counter(h2sec);
+}
+article.note .outline-2:not(.references) .outline-3 > h3::before {
+    content: counter(h2sec) "." counter(h3sec);
+}
+
+/* A phone has no margin to hang anything in -- the text column already runs
+   to both edges, and stealing 30px for a gutter would cost about three
+   characters a line.  So the number keeps its size and simply leads the
+   heading instead of standing beside it. */
+@media (max-width: 699px) {
+    :root { --marker-gutter: 0rem; }
+
+    article.note .outline-2:not(.references) > h2::before,
+    article.note .outline-2:not(.references) .outline-3 > h3::before {
+        position: static;
+        padding-top: 0;
+        margin-right: 0.4em;
+    }
+}
+
 .outline-2 > h2 {
     padding-top: 0.5rem;
 }
@@ -1496,7 +1569,12 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
    the horizontal space. */
 @media (min-width: 1100px) {
     body {
-        width: min(100% - 5rem, 1120px);
+        /* The shell must leave at least the marker gutter outside itself at
+           each edge, or pulling div#body left to make room for the section
+           numbers takes it off the side of the viewport.  Between 1100 and
+           ~1220 that costs the column about 27px; nothing above 1280 notices. */
+        --shell-inset: calc(2 * var(--marker-gutter) + 1rem);
+        width: min(100% - var(--shell-inset), 1120px);
         max-width: none;
         padding-left: 0;
         padding-right: 0;
@@ -1517,7 +1595,9 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
    Give that range the same single-column treatment as narrow screens. */
 @media (min-width: 761px) and (max-width: 1099px) {
     body { width: 86%; padding-left: 7%; padding-right: 7%; }
-    div#body { width: 100%; padding-left: 0; padding-right: 0; }
+    /* padding-left is the marker gutter (see "Section numbers" above), not
+       one of org.css's; zeroing it here would clip every section number. */
+    div#body { width: 100%; padding-left: var(--marker-gutter); padding-right: 0; }
     div#container { width: 100%; padding-left: 0; -webkit-padding-start: 0; }
 
     :root { --measure: 100%; }
@@ -1575,7 +1655,7 @@ img { height: auto; }   /* width/height attrs reserve space; keep ratio */
        Let `body' be the only thing that insets the column. */
     div#body {
         width: 100%;
-        padding-left: 0;
+        padding-left: var(--marker-gutter);   /* see "Section numbers" above */
         padding-right: 0;
     }
     div#container {
