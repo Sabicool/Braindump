@@ -10,6 +10,12 @@
 <meta property="og:site_name" content="Braindump">
 <meta property="og:title" content="Should you schedule all actionable items?">
 <meta property="og:description" content="Mr Brownlee (MKBHD) himself said that he always sets a date in the episode about productivity apps waveform podcast. This way he doesn&rsquo;t have to review all his todos.">
+<meta property="og:image" content="https://sabicool.github.io/Braindump/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Braindump — a moth between two flowering sprigs">
+<meta property="og:url" content="https://sabicool.github.io/Braindump/notes/20251109210644-should_you_schedule_all_actionable_items.html">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../css/normalize.css">
 <link rel="stylesheet" href="../css/tufte.css">
@@ -49,9 +55,9 @@ I use <code>org-ql</code> to easily create a list of this using this bit of elis
 <pre class="code src src-emacs-lisp" data-lang="emacs-lisp"><code>(<span class="org-keyword">setq</span> <span class="org-variable-name">org-agenda-custom-commands</span>
       <span class="org-highlight-quoted-quote">`</span>(
         (<span class="org-string">"du"</span> <span class="org-string">"Unscheduled Tasks"</span>
-         ((<span class="org-function-name">org-ql-block</span> <span class="org-highlight-quoted-quote">'</span>(and (todo <span class="org-string">"</span><span class="org-string"><span class="custom">NEXT</span></span><span class="org-string">"</span>)
+         ((<span class="org-constant">org-ql-block</span> <span class="org-highlight-quoted-quote">'</span>(and (todo <span class="org-string">"</span><span class="org-string"><span class="custom">NEXT</span></span><span class="org-string">"</span>)
                               (<span class="org-constant">not</span> (scheduled t)))
-                        ((org-ql-block-header <span class="org-string">"Unscheduled Tasks"</span>)
+                        ((<span class="org-variable-name">org-ql-block-header</span> <span class="org-string">"Unscheduled Tasks"</span>)
                          (<span class="org-variable-name">org-super-agenda-groups</span>
                           <span class="org-highlight-quoted-quote">'</span>((<span class="org-builtin">:name</span> <span class="org-string">"Has Deadline"</span>
                              <span class="org-builtin">:deadline</span> t)
