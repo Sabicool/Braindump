@@ -34,6 +34,16 @@
     --evergreen:     #3b6e8f;
 
     --measure:       55%;       /* Tufte's text column */
+
+    /* Code face.  No webfont: a monospace is read a few words at a time, so
+       matching the reader's own screen beats shipping 100 kB for a face they
+       may render worse.  Ordered best-first per platform, ending at Menlo /
+       Consolas / DejaVu, which are always there.  Courier is deliberately
+       absent — thin, small on the x-height, and the reason the old stack was
+       hard to read in the dark. */
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", "Cascadia Mono",
+            "JetBrains Mono", "IBM Plex Mono", "Source Code Pro",
+            Menlo, Consolas, "DejaVu Sans Mono", "Roboto Mono", monospace;
     /* Body line height as a length, so the dropcap can be sized against an
        exact number of lines.  1.4rem copy (tufte.css) x 1.62. */
     --body-line:     2.268rem;
@@ -1164,6 +1174,11 @@ section > table th.org-left { text-align: left; }
    everything else on the page.
    -------------------------------------------------------------------------- */
 
+code, kbd, samp, pre, pre > code, .verbatim {
+    font-family: var(--mono);
+    font-variant-ligatures: none;   /* -> and != should read as typed */
+}
+
 code,
 :not(pre) > code {          /* org.css gives inline code a #DDD border and #333 text */
     border: 0;
@@ -1172,8 +1187,9 @@ code,
     background: var(--bg-sunk);
     color: var(--ink);
     padding: 0.08em 0.35em;
-    /* Monospace sets wide; 0.8em of body copy reads level with it. */
-    font-size: 0.8em;
+    /* These faces carry a taller x-height than the old stack, so they read
+       level with the body copy a touch smaller than before. */
+    font-size: 0.78em;
 }
 
 pre > code,
