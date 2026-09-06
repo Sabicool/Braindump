@@ -49,9 +49,9 @@ I use <code>org-ql</code> to easily create a list of this using this bit of elis
 <pre class="code src src-emacs-lisp" data-lang="emacs-lisp"><code>(<span class="org-keyword">setq</span> <span class="org-variable-name">org-agenda-custom-commands</span>
       <span class="org-highlight-quoted-quote">`</span>(
         (<span class="org-string">"du"</span> <span class="org-string">"Unscheduled Tasks"</span>
-         ((<span class="org-constant">org-ql-block</span> <span class="org-highlight-quoted-quote">'</span>(and (todo <span class="org-string">"</span><span class="org-string"><span class="custom">NEXT</span></span><span class="org-string">"</span>)
+         ((<span class="org-function-name">org-ql-block</span> <span class="org-highlight-quoted-quote">'</span>(and (todo <span class="org-string">"</span><span class="org-string"><span class="custom">NEXT</span></span><span class="org-string">"</span>)
                               (<span class="org-constant">not</span> (scheduled t)))
-                        ((<span class="org-variable-name">org-ql-block-header</span> <span class="org-string">"Unscheduled Tasks"</span>)
+                        ((org-ql-block-header <span class="org-string">"Unscheduled Tasks"</span>)
                          (<span class="org-variable-name">org-super-agenda-groups</span>
                           <span class="org-highlight-quoted-quote">'</span>((<span class="org-builtin">:name</span> <span class="org-string">"Has Deadline"</span>
                              <span class="org-builtin">:deadline</span> t)
