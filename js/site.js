@@ -94,11 +94,11 @@
   })();
 
   /* ---------------------------------------------------------------------
-     Code blocks: copy button
+     Code blocks and cite-this: copy button
      --------------------------------------------------------------------- */
   (function () {
     if (!navigator.clipboard) return;
-    Array.prototype.forEach.call(document.querySelectorAll('pre.code'), function (pre) {
+    Array.prototype.forEach.call(document.querySelectorAll('pre.code, .cite-this pre'), function (pre) {
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'code-copy';

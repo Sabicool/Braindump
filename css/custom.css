@@ -880,6 +880,7 @@ p.dropcap-para ~ * { clear: left; }
 .cite-this summary::-webkit-details-marker { display: none; }
 .cite-this summary:hover { color: var(--accent); }
 .cite-this pre {
+    position: relative;
     width: 100%;
     box-sizing: border-box;
     margin: 0.6rem 0 0;
@@ -887,6 +888,7 @@ p.dropcap-para ~ * { clear: left; }
     font-size: 0.85rem;
     line-height: 1.5;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;    /* long note URLs */
     background: var(--bg-sunk);
     border: 1px solid var(--rule);
     border-radius: 3px;
@@ -1310,7 +1312,7 @@ pre.code[data-lang]::before {
     pointer-events: none;
     z-index: 1;                 /* above the <code> background */
 }
-pre.code .code-copy {
+pre.code .code-copy, .cite-this .code-copy {
     position: absolute;
     z-index: 2;
     top: 0.3rem;
@@ -1329,7 +1331,8 @@ pre.code .code-copy {
     transition: opacity 0.12s ease;
 }
 pre.code:hover .code-copy, pre.code .code-copy:focus-visible { opacity: 1; }
-pre.code .code-copy:hover { color: var(--accent); border-color: var(--accent-soft); }
+pre.code .code-copy:hover, .cite-this .code-copy:hover { color: var(--accent); border-color: var(--accent-soft); }
+.cite-this .code-copy { opacity: 1; }   /* the copy is the point here: always visible */
 pre.code:hover[data-lang]::before { opacity: 0; }
 
 /* Syntax palette — htmlize emits face classes (org-html-htmlize-output-type
