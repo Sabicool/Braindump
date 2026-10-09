@@ -1193,6 +1193,170 @@ section > .csl-bib-body,
 .csl-entry + .csl-entry { margin-top: 0.5rem; }
 
 /* --------------------------------------------------------------------------
+   9b. Trail
+
+   Where a note sits, from org-roam-trail: a breadcrumb above the title, a
+   Trail block above the backlinks, and trail.html, the whole tree.  The
+   breadcrumb borrows the meta line's voice; the block borrows the
+   backlinks' label and rule, since both are machinery around the note.
+   -------------------------------------------------------------------------- */
+
+.trail-crumbs {
+    width: var(--measure);
+    max-width: 100%;
+    margin: 2.4rem 0 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+.trail-crumbs + h1.title { margin-top: 0.5rem; }
+
+/* A note filed in several places gets a line per path, stacked beside the
+   one Trail link so they line up with each other. */
+.trail-crumbs { display: flex; align-items: baseline; }
+.trail-crumbs .trail-paths { display: flex; flex-direction: column; }
+
+/* ET Book has no glyph of its own at U+203A and shows a ligature there. */
+.trail-crumbs .sep,
+.trail-nav .sep {
+    margin: 0 0.45em;
+    color: var(--rule-strong);
+    font-family: Palatino, "Palatino Linotype", Georgia, serif;
+}
+
+.trail-crumbs a:link,
+.trail-crumbs a:visited {
+    color: var(--ink-muted);
+    text-decoration: none;
+}
+
+.trail-crumbs a:hover { color: var(--accent); }
+
+/* An unpublished step on the path is context, not a broken link. */
+.trail-crumbs .private-link { border-bottom: 0; cursor: default; }
+
+/* Two blocks of machinery in a row should not each open a new chapter. */
+.references.trail + .references { margin-top: 2.4rem; }
+
+.trail-nav p,
+.trail-nav ul {
+    width: 100%;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    margin: 0.4rem 0;
+}
+
+.trail-nav .trail-step {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.trail-nav .trail-next { margin-left: auto; text-align: right; }
+
+.trail-nav .trail-label {
+    margin-top: 1.3rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+.trail-nav ul { list-style: none; padding-left: 0; -webkit-padding-start: 0; }
+.trail-nav li { margin: 0.2rem 0; }
+
+.trail-nav a:link,
+.trail-nav a:visited,
+ul.trail-tree a:link,
+ul.trail-tree a:visited { text-decoration: none; }
+
+.trail-nav a:hover,
+ul.trail-tree a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 0.055em;
+    text-underline-offset: 0.18em;
+    text-decoration-color: var(--accent);
+}
+
+/* trail.html */
+
+.trail-intro { color: var(--ink-muted); }
+
+ul.trail-tree,
+ul.trail-tree ul {
+    list-style: none;
+    padding-left: 0;
+    -webkit-padding-start: 0;
+    margin: 0;
+}
+
+ul.trail-tree {
+    width: var(--measure);
+    max-width: 100%;
+    margin-top: 1.6rem;
+}
+
+/* The indent guide: a hairline running down from the parent's marker. */
+ul.trail-tree ul {
+    margin-left: -0.75rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--rule);
+}
+
+ul.trail-tree li {
+    position: relative;
+    padding-left: 1.1rem;
+    margin: 0.3rem 0;
+    font-size: 1.3rem;
+    line-height: 1.45;
+}
+
+ul.trail-tree li::before { content: none; }
+
+/* Branches are <details> only for folding; undo the code-folding card
+   that org.css and section 11 give every <details>. */
+ul.trail-tree details {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+}
+
+ul.trail-tree summary {
+    list-style: none;
+    color: inherit;
+    font-size: inherit;     /* org.css enlarges summaries */
+    cursor: pointer;
+}
+
+ul.trail-tree summary::-webkit-details-marker { display: none; }
+
+ul.trail-tree summary::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    font-size: 0.8em;
+    color: var(--ink-faint);
+    transition: transform 0.15s;
+}
+
+ul.trail-tree details[open] > summary::before { transform: rotate(90deg); }
+ul.trail-tree summary:hover::before { color: var(--accent); }
+
+/* The note a breadcrumb sent the reader to. */
+ul.trail-tree .trail-here > a,
+ul.trail-tree .trail-here > details > summary > a { color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+    ul.trail-tree summary::before { transition: none; }
+}
+
+/* --------------------------------------------------------------------------
    10. Tables
 
    org.css centres everything and draws a vertical rule between every cell.
